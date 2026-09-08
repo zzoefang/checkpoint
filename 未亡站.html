@@ -1,0 +1,971 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta name="x-poe-datastore-behavior" content="local_only"><meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval' data: blob: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://code.jquery.com https://unpkg.com https://d3js.org https://threejs.org https://cdn.plot.ly https://stackpath.bootstrapcdn.com https://maps.googleapis.com https://cdn.tailwindcss.com https://ajax.googleapis.com https://kit.fontawesome.com https://cdn.datatables.net https://maxcdn.bootstrapcdn.com https://code.highcharts.com https://tako-static-assets-production.s3.amazonaws.com https://www.youtube.com https://fonts.googleapis.com https://fonts.gstatic.com https://pfst.cf2.poecdn.net https://puc.poecdn.net https://i.imgur.com https://wikimedia.org https://*.icons8.com https://*.giphy.com https://picsum.photos https://images.unsplash.com; frame-src 'self' https://www.youtube.com https://trytako.com; child-src 'self'; manifest-src 'self'; worker-src 'self'; upgrade-insecure-requests; block-all-mixed-content;">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#171c20">
+<title>未亡站 · 一份尚未生效的死亡证明</title>
+<style>
+:root{
+  --bg:#171c20; --paper:#dfd5be; --muted:#9b9c91;
+  --line:#ffffff19; --red:#d47963; --gold:#d8b570;
+  --blue:#8fbbbf; --green:#a5b596;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{
+  margin:0;background:var(--bg);color:var(--paper);
+  font-family:"Songti SC","Noto Serif CJK SC","STSong","SimSun",serif;
+}
+button{font:inherit}
+button:focus-visible,summary:focus-visible{
+  outline:2px solid var(--gold);outline-offset:4px;
+}
+button{touch-action:manipulation}
+.shell{min-height:100vh;display:grid;grid-template-columns:43% 57%}
+.art{
+  position:sticky;top:0;height:100vh;overflow:hidden;
+  background:#26383c;border-right:1px solid var(--line);
+}
+.art svg{width:100%;height:100%;object-fit:cover;display:block}
+.art::after{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(180deg,#10171c22 20%,#10171c00 45%,#10171cee);
+}
+.rain{
+  position:absolute;inset:-20%;opacity:.12;pointer-events:none;
+  background:repeating-linear-gradient(108deg,transparent 0 36px,#d7e9e5 37px,transparent 38px 68px);
+  animation:rain 1.2s linear infinite;
+}
+@keyframes rain{to{transform:translate(-22px,66px)}}
+.art-top{
+  position:absolute;z-index:2;top:32px;left:32px;right:32px;
+  display:flex;justify-content:space-between;color:#e3dfcb;
+  font:11px/1.6 monospace;letter-spacing:3px;
+}
+.art-top span:last-child{text-align:right}
+.art-bottom{position:absolute;z-index:2;bottom:38px;left:34px;right:30px}
+.chapter{font:11px/1.5 sans-serif;letter-spacing:5px;color:var(--gold)}
+.art h1{
+  margin:12px 0 14px;font-size:clamp(64px,8vw,126px);
+  font-weight:900;letter-spacing:-6px;line-height:1;
+  text-shadow:4px 3px 0 #bc72512b;
+}
+.art-quote{font-size:14px;line-height:1.9;max-width:290px;color:#bfbdad}
+.coordinates{
+  display:flex;gap:16px;margin-top:24px;padding-top:18px;
+  border-top:1px solid #ffffff26;
+  font:10px monospace;color:#9ca9a3;letter-spacing:2px;
+}
+.stamp{
+  position:absolute;z-index:2;left:30px;top:37%;
+  color:#cb755ac9;border:3px solid currentColor;
+  padding:8px 12px;font-size:23px;font-weight:bold;
+  transform:rotate(-12deg);letter-spacing:7px;
+}
+.main{min-width:0;background:radial-gradient(ellipse at top right,#45413222,transparent 65%)}
+.topbar{
+  display:flex;align-items:center;justify-content:space-between;
+  gap:12px;padding:22px 34px;border-bottom:1px solid var(--line);
+  font:11px/1.6 sans-serif;letter-spacing:2px;color:var(--muted);
+}
+.tools{display:flex;gap:10px}
+.ghost{
+  border:1px solid #ffffff25;background:transparent;color:var(--paper);
+  padding:7px 10px;cursor:pointer;font-size:12px;letter-spacing:1px;
+}
+.ghost:hover{border-color:var(--gold);color:var(--gold)}
+.status{
+  display:flex;flex-wrap:wrap;gap:10px 18px;padding:16px 34px;
+  border-bottom:1px solid var(--line);
+  font:12px/1.7 sans-serif;color:var(--muted);
+}
+.status strong{color:var(--paper);font-weight:500}
+.status .ember{color:var(--gold)}
+.content{max-width:790px;margin:0 auto;padding:38px 42px 64px}
+.eyebrow{font:10px/1.8 sans-serif;letter-spacing:3px;color:var(--gold)}
+h2{font-size:clamp(27px,3vw,38px);font-weight:500;line-height:1.35;margin:12px 0 30px}
+.prose p{font-size:16px;line-height:2;margin:0 0 21px;white-space:pre-line}
+.prose .narrator{color:#d5cfbd}
+.line{
+  border-left:2px solid #ffffff22;padding:2px 0 2px 18px;
+  margin:25px 0;
+}
+.line .speaker{
+  display:block;font:11px/1.5 sans-serif;
+  letter-spacing:2px;margin-bottom:8px;color:var(--gold);
+}
+.line p{margin:0;font-size:15px}
+.line.logic{border-color:var(--blue)}
+.line.logic .speaker{color:var(--blue)}
+.line.empathy{border-color:var(--red)}
+.line.empathy .speaker{color:var(--red)}
+.line.ruin{border-color:var(--green)}
+.line.ruin .speaker{color:var(--green)}
+.line.body{border-color:var(--gold)}
+.line.human{border-color:#91978d}
+.line.human .speaker{color:#bfc3b6}
+.check{
+  background:#0b111550;border:1px solid #ffffff1c;
+  padding:15px 17px;margin:25px 0;
+  font:12px/1.8 sans-serif;
+}
+.check b{color:var(--gold);letter-spacing:2px}
+.check.fail b{color:var(--red)}
+.check .dice{font:24px/1.5 monospace;letter-spacing:5px;margin:6px 0;color:var(--paper)}
+.check small{display:block;color:var(--muted)}
+.choices{border-top:1px solid var(--line);padding-top:22px;margin-top:30px}
+.choice{
+  width:100%;display:grid;grid-template-columns:27px 1fr;gap:11px;
+  border:1px solid #ffffff18;background:#ffffff02;
+  color:var(--paper);text-align:left;padding:16px 17px;
+  margin:0 0 10px;cursor:pointer;transition:background .16s,border-color .16s;
+}
+.choice:hover:not(:disabled){background:#d8b5700d;border-color:#d8b57077}
+.choice:disabled{opacity:.42;cursor:not-allowed}
+.choice .number{font:12px/1.8 monospace;color:var(--gold)}
+.choice .label{font-size:15px;line-height:1.65}
+.choice .hint{display:block;margin-top:5px;font:11px/1.7 sans-serif;color:var(--muted)}
+.choice.danger{border-color:#d4796335}
+.choice.special{border-color:#d8b57075;background:#d8b57007}
+.footer-note{font:10px/1.8 sans-serif;color:#777f7b;margin-top:22px;letter-spacing:1px}
+.evidence-strip{display:flex;flex-wrap:wrap;gap:7px;margin-top:18px}
+.tag{border:1px solid #d8b57035;color:#b8ab8c;padding:5px 8px;font:10px sans-serif}
+.end-label{
+  display:inline-block;border:1px solid var(--gold);padding:7px 12px;
+  color:var(--gold);font:11px sans-serif;letter-spacing:3px;margin-bottom:12px;
+}
+.summary{border-top:1px solid var(--line);padding-top:18px;color:var(--muted);font:12px/1.9 sans-serif}
+dialog{
+  width:min(600px,calc(100% - 30px));max-height:85vh;
+  overflow:auto;background:#20272b;color:var(--paper);
+  border:1px solid #a6956a66;padding:28px;
+}
+dialog::backdrop{background:#080d11cc;backdrop-filter:blur(4px)}
+.dialog-head{display:flex;align-items:center;justify-content:space-between;gap:15px}
+.dialog-head h3{margin:0;font-weight:500;font-size:24px}
+.journal-item{padding:20px 0;border-bottom:1px solid var(--line)}
+.journal-item h4{margin:0 0 9px;color:var(--gold);font-size:15px}
+.journal-item p{font-size:14px;line-height:1.9;color:#bdbdae;margin:0}
+.journal-empty{padding:30px 0;color:var(--muted);font-size:14px;line-height:1.9}
+.toast{
+  position:fixed;z-index:10;bottom:24px;left:50%;transform:translateX(-50%);
+  padding:11px 20px;background:#d5c5a2;color:#20272b;
+  font:12px/1.6 sans-serif;max-width:90vw;
+  box-shadow:0 8px 40px #0005;pointer-events:none;
+}
+@media(min-width:1500px){.content{padding-top:55px}.prose p{font-size:18px}}
+@media(max-width:850px){
+  .shell{grid-template-columns:36% 64%}
+  .content{padding:30px 26px 50px}
+  .topbar,.status{padding-left:24px;padding-right:24px}
+  .art-bottom{left:22px}.art h1{font-size:76px}
+  .art-top{left:22px;right:18px}.art-top span:last-child{display:none}
+  .stamp{left:18px;font-size:18px}
+}
+@media(max-width:620px){
+  .shell{display:block}
+  .art{position:relative;height:310px;border-right:0;border-bottom:1px solid var(--line)}
+  .art svg{position:absolute;inset:0}
+  .art-top{top:18px;left:22px}
+  .art-bottom{bottom:23px;left:23px}
+  .art h1{font-size:70px;margin:10px 0;letter-spacing:-3px}
+  .art-quote{font-size:12px;margin:0;max-width:250px}
+  .chapter{font-size:9px;letter-spacing:3px}
+  .coordinates{display:none}
+  .stamp{left:auto;right:24px;top:105px;font-size:19px}
+  .topbar{padding:15px 20px}.status{padding:12px 20px;gap:8px 14px;font-size:11px}
+  .content{padding:27px 23px 45px}
+  .prose p{font-size:16px;line-height:1.95}
+  .choice{padding:14px 12px}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+}
+</style>
+</head>
+<body>
+<div class="shell">
+  <aside class="art" aria-label="风雨中的港口临检站插画">
+    <!-- 完全内嵌的原创矢量场景：色块、颗粒、倾斜笔触 -->
+    <svg viewBox="0 0 640 1000" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <defs>
+        <linearGradient id="sky" x2=".4" y2="1">
+          <stop stop-color="#253944"></stop>
+          <stop offset=".55" stop-color="#73817a"></stop>
+          <stop offset="1" stop-color="#b5a381"></stop>
+        </linearGradient>
+        <linearGradient id="sea" x2="0" y2="1">
+          <stop stop-color="#526965"></stop><stop offset="1" stop-color="#172c34"></stop>
+        </linearGradient>
+        <radialGradient id="lamp">
+          <stop stop-color="#f9cd82" stop-opacity=".65"></stop>
+          <stop offset="1" stop-color="#e6b261" stop-opacity="0"></stop>
+        </radialGradient>
+        <filter id="rough" x="-10%" y="-10%" width="120%" height="120%">
+          <feTurbulence type="fractalNoise" baseFrequency=".014" numOctaves="3" seed="8" result="noise"></feTurbulence>
+          <feDisplacementMap in="SourceGraphic" in2="noise" scale="8"></feDisplacementMap>
+        </filter>
+        <filter id="grain">
+          <feTurbulence type="fractalNoise" baseFrequency=".67" numOctaves="3" stitchTiles="stitch"></feTurbulence>
+          <feColorMatrix type="saturate" values="0"></feColorMatrix>
+        </filter>
+      </defs>
+      <rect width="640" height="1000" fill="url(#sky)"></rect>
+      <g filter="url(#rough)">
+        <path d="M-60 130L360 45 710 170 570 213 180 150Z" fill="#adb49c" opacity=".15"></path>
+        <path d="M-10 245L420 136 660 235 410 221 70 312Z" fill="#1c333f" opacity=".36"></path>
+        <path d="M85 80L420 107 260 131 45 113Z" fill="#c0baa0" opacity=".13"></path>
+        <circle cx="452" cy="291" r="73" fill="#b06b53" opacity=".72"></circle>
+        <path d="M356 304L554 262 562 283 354 323Z" fill="#71817b" opacity=".55"></path>
+        <path d="M0 465L0 369 60 352 61 311 112 304 120 416 176 413 176 356 229 346 245 430 300 426 312 371 363 367 381 463Z" fill="#344b4d"></path>
+        <path d="M-20 430L121 400 142 530 -20 552Z" fill="#283a40"></path>
+        <path d="M398 474L424 390 550 361 659 405 657 530Z" fill="#3b4c49"></path>
+        <path d="M461 395L470 168 480 166 480 395Z" fill="#23373a"></path>
+        <path d="M465 181L294 242 290 227 478 152 616 185 610 196Z" fill="#243a3d"></path>
+        <path d="M305 233L308 373M580 192L580 310" stroke="#263b3e" stroke-width="3"></path>
+        <path d="M300 370L315 370 309 386Z" fill="#27383a"></path>
+        <rect x="82" y="379" width="8" height="19" fill="#ccb37b" opacity=".7"></rect>
+        <rect x="193" y="377" width="10" height="16" fill="#a38e65" opacity=".65"></rect>
+        <path d="M0 490Q330 450 640 499L640 1000H0Z" fill="url(#sea)"></path>
+        <g stroke-linecap="square" opacity=".4">
+          <path d="M389 533L491 519M418 555L469 552M374 580L499 572M416 613L465 609M361 646L496 632" stroke="#bd8964" stroke-width="9"></path>
+          <path d="M21 565L231 547M62 612L190 598M500 592L665 571M5 686L214 661" stroke="#8d9c8b" stroke-width="5"></path>
+          <path d="M254 530L336 522M268 621L356 609M519 687L642 674" stroke="#b6b099" stroke-width="3"></path>
+        </g>
+        <!-- 远处的摆渡船 -->
+        <path d="M352 492L593 477 552 518 393 526Z" fill="#1e3036"></path>
+        <path d="M416 481L416 449 506 443 529 481Z" fill="#9c9a80"></path>
+        <path d="M430 454L446 453 446 468 430 470ZM457 452L473 451 475 466 458 467Z" fill="#263d42"></path>
+        <path d="M492 447L491 420 505 419 509 446Z" fill="#3b3935"></path>
+        <path d="M504 420Q469 384 532 352Q507 381 562 409Z" fill="#465856" opacity=".5"></path>
+        <!-- 湿码头 -->
+        <path d="M-20 663L344 587 673 727 655 1015 -10 1017Z" fill="#343e3e"></path>
+        <path d="M-10 717L353 625 640 754 640 807 312 684 0 776Z" fill="#777a68" opacity=".4"></path>
+        <path d="M-10 824L349 713 672 847" fill="none" stroke="#192e33" stroke-width="20"></path>
+        <path d="M81 1000L260 670M440 1000L319 686" stroke="#a29a7b" stroke-width="5" opacity=".2"></path>
+        <!-- 临检屋 -->
+        <path d="M-40 482L176 441 213 682 -30 759Z" fill="#303e3d"></path>
+        <path d="M-23 473L181 422 201 443 -18 495Z" fill="#1b3036"></path>
+        <path d="M29 500L146 473 162 584 39 615Z" fill="#c4a065"></path>
+        <path d="M37 508L139 484 151 576 47 602Z" fill="#524e3d"></path>
+        <path d="M42 517L135 495 143 549 48 574Z" fill="#c8a668" opacity=".74"></path>
+        <path d="M82 493L97 592M39 557L151 531" stroke="#293a39" stroke-width="8"></path>
+        <path d="M41 633L157 603 163 639 44 673Z" fill="#b2a68a"></path>
+        <text x="56" y="650" fill="#3d4540" font-size="26" font-family="serif" transform="rotate(-14 56 650)">临 检</text>
+        <!-- 灯与光晕 -->
+        <ellipse cx="296" cy="542" rx="117" ry="165" fill="url(#lamp)"></ellipse>
+        <path d="M291 432L311 737" stroke="#243438" stroke-width="10"></path>
+        <path d="M278 443L300 435 309 463 278 470Z" fill="#e3bb76"></path>
+        <!-- 前景：穿旧雨衣的人 -->
+        <path d="M379 815L373 934 389 956 409 947 417 824Z" fill="#162c32"></path>
+        <path d="M417 819L434 945 457 953 467 939 450 806Z" fill="#15292f"></path>
+        <path d="M378 699Q415 667 451 704L479 847 358 860Z" fill="#a58c57"></path>
+        <path d="M379 709L361 809 346 826 332 812 353 717Z" fill="#8f8054"></path>
+        <path d="M448 711L477 762 458 799 446 785 454 761 429 731Z" fill="#c1a064"></path>
+        <path d="M384 698Q380 660 408 650Q444 651 445 692L426 720Z" fill="#b59a62"></path>
+        <path d="M399 678Q420 662 437 686L426 711 405 704Z" fill="#283738"></path>
+        <path d="M381 742L404 720 390 846M437 740L452 834" stroke="#e1bb75" stroke-width="6" opacity=".36"></path>
+        <path d="M343 801L375 815 365 845 334 828Z" fill="#b8b5a0"></path>
+        <!-- 粗笔触 -->
+        <path d="M15 928L180 842M470 911L654 848M540 97L610 80" stroke="#c1b993" stroke-width="13" opacity=".1"></path>
+      </g>
+      <rect width="640" height="1000" filter="url(#grain)" opacity=".095" style="mix-blend-mode:soft-light"></rect>
+    </svg>
+    <div class="rain"></div>
+    <div class="art-top">
+      <span>盐港 / 南汊<br>第五临检所</span>
+      <span>05:41<br>潮位 +3.7</span>
+    </div>
+    <div class="stamp" id="artStamp">尚未生效</div>
+    <div class="art-bottom">
+      <div class="chapter">第一章 / A CITY WITHOUT YOU</div>
+      <h1>未亡站</h1>
+      <p class="art-quote" id="artQuote">这座城没有杀死任何人。<br>它只是提前完成了统计。</p>
+      <div class="coordinates"><span>23 人等待核验</span><span>1 班末航</span></div>
+    </div>
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <span id="saveStatus">一份尚未生效的死亡证明</span>
+      <div class="tools">
+        <button class="ghost" id="journalBtn">手记 <span id="clueCount">0</span></button>
+        <button class="ghost" id="resetBtn">重启</button>
+      </div>
+    </header>
+    <section class="status" id="status" aria-label="角色状态"></section>
+    <article class="content">
+      <div id="story"></div>
+      <div class="choices" id="choices" aria-label="行动选项"></div>
+      <div class="evidence-strip" id="evidenceStrip"></div>
+      <div class="footer-note">数字键 1—9 选择 · 调查没有实时倒计时 · 每次行动自动保存</div>
+    </article>
+  </main>
+</div>
+
+<dialog id="journal">
+  <div class="dialog-head">
+    <h3>潮湿的手记</h3>
+    <button class="ghost" id="closeJournal">合上 ×</button>
+  </div>
+  <div id="journalBody"></div>
+</dialog>
+<div class="toast" id="toast" role="status" hidden=""></div>
+
+<script>
+"use strict";
+
+const $ = id => document.getElementById(id);
+const KEY = "weiwang-station-chapter-1-v1";
+const skillNames = {logic:"逻辑",empathy:"共感",ruin:"废墟感",body:"血肉"};
+
+const profiles = {
+  clerk:{
+    name:"过期的文书",
+    stats:{logic:5,empathy:2,ruin:3,body:2},
+    description:"你相信标点。至少标点不会在月底拖欠工资。"
+  },
+  listener:{
+    name:"不合格的倾听者",
+    stats:{logic:3,empathy:5,ruin:2,body:2},
+    description:"别人的悲伤总能找到你。你从没给过它们地址。"
+  },
+  porter:{
+    name:"被辞退的搬运工",
+    stats:{logic:2,empathy:3,ruin:2,body:5},
+    description:"你曾经替城市搬运未来。后来，他们买了一台叉车。"
+  }
+};
+
+const evidenceData = {
+  date:{
+    title:"提前十九分钟的死亡",
+    text:"注销清册写着：南汊二十三名居民于今日 06:00 死亡。站内时钟停在你抵达时的 05:41。清册不是在记录过去，而是在安排未来。"
+  },
+  seal:{
+    title:"财政处的压痕",
+    text:"死亡清册下面压着港区资产交割单。两份文件使用同一枚财政处钢印。空置交割必须先把居民从名册上抹掉。老值班员的附签栏仍然空着。"
+  },
+  people:{
+    title:"二十三个名字",
+    text:"阿祁提供的名单包含二十三名仍活着的居民。沈小满是第十七个；她在自己的名字后面画了一条有六条腿的狗。名单不是统计，它有人握过的温度。"
+  },
+  clause:{
+    title:"临检条例第九条",
+    text:"因文书争议产生的涉案证物，可由临检员签署移送单，搭乘末航转交北岸复核。证人移送则须发现公文伪造证据，并由一名在岗职员联署。"
+  }
+};
+
+function fresh(){
+  return {
+    version:1,scene:"start",profile:null,nerve:2,trust:0,
+    evidence:[],flags:{},checks:{},ending:null
+  };
+}
+let state = fresh();
+let restored = false;
+try{
+  const saved = JSON.parse(localStorage.getItem(KEY));
+  const allowed = ["start","intro","hub","ledger","woman","plate","clerk","final","force","ending"];
+  if(saved && saved.version===1 && allowed.includes(saved.scene) &&
+     (saved.scene==="start" || profiles[saved.profile]) &&
+     Array.isArray(saved.evidence) && saved.flags && saved.checks &&
+     Number.isFinite(saved.nerve) && Number.isFinite(saved.trust)){
+    state = saved;
+    restored = true;
+  }
+}catch(e){}
+
+const escapeHTML = text => String(text).replace(/[&<>"']/g, c => ({
+  "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+}[c]));
+
+let toastTimer;
+function toast(text){
+  $("toast").textContent = text;
+  $("toast").hidden = false;
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(()=>{$("toast").hidden=true},2600);
+}
+function save(){
+  try{
+    localStorage.setItem(KEY,JSON.stringify(state));
+    $("saveStatus").textContent = "案卷已保存 / 末航尚未离岸";
+  }catch(e){
+    $("saveStatus").textContent = "无法本地存档 / 本次仍可游玩";
+  }
+}
+function addEvidence(id){
+  if(!state.evidence.includes(id)){
+    state.evidence.push(id);
+    toast("手记新增："+evidenceData[id].title);
+  }
+}
+const has = id => state.evidence.includes(id);
+const stats = () => profiles[state.profile]?.stats || {};
+const N = text => ({kind:"narrator",text});
+const V = (kind,speaker,text) => ({kind,speaker,text});
+const C = (label,run,hint="",disabled=false,style="") => ({label,run,hint,disabled,style});
+const go = scene => {state.scene=scene};
+const back = () => C("退回候船厅。",()=>go("hub"),"已获得的线索与检定结果会保留");
+const scene = (eyebrow,title,lines,choices) => ({eyebrow,title,lines,choices});
+
+function checkInfo(skill,target,bonus=0){
+  return `2D6 + ${skillNames[skill]} ${stats()[skill]}${bonus?` + 情境 ${bonus}`:""} ≥ ${target}；双 1 必败，双 6 必成`;
+}
+function roll(id,skill,target,bonus=0){
+  const old = state.checks[id];
+  if(old){
+    if(old.ok || old.tries>=2 || state.nerve<1) return;
+    state.nerve--;
+  }
+  const dice = [1+Math.floor(Math.random()*6),1+Math.floor(Math.random()*6)];
+  const total = dice[0]+dice[1]+stats()[skill]+bonus;
+  const snake = dice[0]===1 && dice[1]===1;
+  const twelve = dice[0]===6 && dice[1]===6;
+  const ok = twelve || (!snake && total>=target);
+  state.checks[id] = {dice,total,target,skill,bonus,ok,tries:(old?.tries||0)+1};
+
+  if(id==="ledger"){
+    addEvidence("date");
+    if(ok) addEvidence("seal");
+  }
+  if(id==="names" && ok){
+    addEvidence("people");
+    if(!state.flags.nameTrust){
+      state.trust++;
+      state.flags.nameTrust=true;
+    }
+  }
+  if(id==="plate" && ok) addEvidence("clause");
+  if(id==="force"){
+    state.flags.injured=!ok;
+    state.flags.badgeLost=true;
+  }
+}
+function retry(id,skill,target,bonus=0){
+  const r=state.checks[id];
+  if(!r || r.ok || r.tries>=2) return [];
+  return [C(
+    "不。再试一次。",
+    ()=>roll(id,skill,target,bonus),
+    `消耗 1 点「余火」，重新掷骰 · ${checkInfo(skill,target,bonus)}`,
+    state.nerve<1
+  )];
+}
+function R(id){return {kind:"check",id}}
+function legalReady(){
+  return has("date") && has("people") && has("clause") && state.trust>=1;
+}
+function legalBonus(){return Math.min(state.evidence.length,3)+Math.min(state.trust,2)}
+function finish(id){
+  state.ending=id;
+  state.scene="ending";
+}
+
+const scenes = {
+  start(){
+    return scene("原创互动短篇 / 约 10—20 分钟","先决定：你用什么忍受这座城？",[
+      N("你是盐港市的一名临时核验员。\n“临时”的意思是：出了问题，你比问题更容易被解决。"),
+      N("今夜，你被派往即将撤销的第五临检所。末班摆渡船正在等一份盖章文件。二十三个人也在等。"),
+      V("ruin","废墟感","别担心。我们熟悉这种地方：墙还站着，用途已经死了。"),
+      N("选择一段过去。它决定检定能力，不决定你的道德，也不会让任何结局成为唯一答案。")
+    ],Object.entries(profiles).map(([id,p])=>C(
+      p.name,
+      ()=>{state.profile=id;go("intro")},
+      `${p.description} 〔逻辑 ${p.stats.logic} · 共感 ${p.stats.empathy} · 废墟感 ${p.stats.ruin} · 血肉 ${p.stats.body}〕`
+    )));
+  },
+
+  intro(){
+    return scene("01 / 抵达","雨没有你的编制，但它一直在上班。",[
+      N("雨水从领口钻进去，熟练得像一位查账员。\n你推开临检所的门。墙上的钟指向五点四十一分。空气里有煤油、潮木头，以及被反复煮过的茶。"),
+      N("窗口后坐着一个老人。制服袖口磨成了薄薄的黑纱。他胸前的名牌写着：郁白。"),
+      V("human","郁白 · 夜班值守","“签一下。南汊片区，居民零人。末航就能结班。”"),
+      N("他的身后，二十三个人挤在铁门外的遮雨棚里。一个小女孩正用鞋尖挡住流向蚂蚁的水。"),
+      V("logic","逻辑","零不是一个近似值。他差了整整二十三。"),
+      V("body","血肉","先别当英雄。我们的袜子已经放弃抵抗了。"),
+      N("你把签字笔放回桌上。笔滚了半圈，停在一张死亡清册旁边。")
+    ],[
+      C("“我先看看材料。”",()=>go("hub"),"开始调查；船不会因你阅读缓慢而离开"),
+      C("“他们看起来不像零个人。”",()=>{
+        state.flags.firstProtest=true;go("hub");
+      },"先让屋里的人知道：你看见了")
+    ]);
+  },
+
+  hub(){
+    const opener = state.flags.firstProtest
+      ? "郁白没有看那二十三个人。\n“我知道。”他说。\n这句话比“我不知道”更难处理。"
+      : "郁白把桌灯转向你。光没有变多，只是换了一个需要承受它的人。";
+    return scene("02 / 候船厅","屋里有四样东西不肯保持沉默。",[
+      N(opener),
+      N("一本清册。一位抱着湿布包的女人。一块被涂黑的条例牌。还有郁白——他正认真擦拭一枚早已干净的印章。"),
+      V("empathy","共感","铁门外的人没有催你。那不是耐心。那是他们已经不指望催促有用。"),
+      ...(state.evidence.length>=3 ? [
+        V("logic","逻辑","事实已经足够让一份文件难堪。让一份文件让路，是另一件事。")
+      ] : [])
+    ],[
+      C("翻阅桌上的死亡清册。",()=>go("ledger"),has("date")?"已知：死亡时间尚未到来":"调查 / 文书与日期"),
+      C("走向抱着湿布包的女人。",()=>go("woman"),has("people")?"已记录二十三个名字":"交谈 / 人们是谁"),
+      C("查看被涂黑的条例牌。",()=>go("plate"),has("clause")?"已找到移送条款":"调查 / 被遮住的规则"),
+      C("问郁白：他在等什么？",()=>go("clerk"),state.flags.clerkTalk?"他已经向你提供过一张船票":"交谈 / 值班者的立场"),
+      C("把材料放在窗口，决定末航名单。",()=>go("final"),
+        "进入抉择；在最终签署前仍能返回调查",false,"special")
+    ]);
+  },
+
+  ledger(){
+    const r=state.checks.ledger;
+    return scene("调查 / 纸比人先抵达终点","一份来自十九分钟后的文件。",[
+      N("纸张很新。新得不适合放在这里。盐港的纸通常带着指印、油污，或某种彻底失败的申请。"),
+      N("这张没有。它已经被批准了。\n“南汊片区人员注销汇总：二十三人。死亡时间：今日 06:00。”"),
+      V("logic","逻辑","现在是 05:41。这不是死亡证明。这是一份预约。"),
+      ...(!r ? [
+        N("清册下面还垫着一张薄纸。几处钢印的凹痕重叠在一起，像两段不该相遇的证词。")
+      ] : [
+        R("ledger"),
+        ...(r.ok ? [
+          N("你把两张纸斜向灯光。\n下层是港区资产交割单，要求六点前完成“居民清空”。两份文件的钢印边缘都有同一道缺口。"),
+          V("logic","逻辑","财政处开具死亡清册。就像屠夫签发出生证明。业务范围值得商榷。"),
+          N("附签栏空着。郁白还没有签字。")
+        ] : [
+          N("你把纸举得太近，灯油烟熏黑了指尖。凹痕像一群游来游去的鱼，你一条也没抓住。"),
+          V("logic","逻辑","我们确认了时间。至于印章——我建议把这次失败称作照明条件不足。")
+        ])
+      ])
+    ],[
+      ...(!r ? [C("对照纸张、钢印与时间。",()=>roll("ledger","logic",11),checkInfo("logic",11))] : []),
+      ...retry("ledger","logic",11),
+      back()
+    ]);
+  },
+
+  woman(){
+    const r=state.checks.names;
+    const met=state.flags.metWoman;
+    const lines=[
+      N("女人把湿布包抱得很紧。布角露出一只搪瓷杯，上面印着“先进个人”。杯把已经断了。"),
+      V("human","阿祁 · 南汊居民","“不是骨灰。”她注意到你的目光，“是我家还没碎的东西。”"),
+      N("小女孩靠在她腿边。袖口用红线绣着两个字：小满。")
+    ];
+    const choices=[];
+    if(!met){
+      lines.push(V("empathy","共感","不要先问她为什么没有手续。先问她冷不冷。两种问法打开的不是同一扇门。"));
+      choices.push(
+        C("把桌边的干毛巾递给她。问她叫什么。",()=>{
+          state.flags.metWoman=true;state.flags.kind=true;state.trust++;
+        },"信任 +1；不是检定"),
+        C("“缺少有效证件，你们为什么还来码头？”",()=>{
+          state.flags.metWoman=true;state.flags.cold=true;state.trust--;
+        },"按流程问话；信任 −1")
+      );
+    }else{
+      lines.push(
+        N(state.flags.kind
+          ? "阿祁先擦了小满的头发，才擦自己的手。\n她告诉你，拆迁广播说码头会接走所有仍在南汊的人。她们走了四十分钟。"
+          : "阿祁看着你。\n“因为广播没说，没有证件的人可以不怕淹。”\n你突然很清楚那支签字笔在口袋里的重量。"),
+        V("human","沈小满","“叔叔说我们已经不在了。那我们能不能不买票？”")
+      );
+      if(state.flags.cold && !state.flags.apologized){
+        choices.push(C("“刚才那句话，是我问错了。”",()=>{
+          state.flags.apologized=true;state.trust+=2;
+        },"承认错误，修复信任；不会抹掉你说过的话"));
+      }
+      if(!r && !has("people")){
+        lines.push(N("阿祁拿出一张叠成八折的名单。她没有马上交给你。\n“上回有人拿走名字以后，我们就没有地址了。”"));
+        choices.push(C(
+          "不伸手去拿。先听她把名字念完。",
+          ()=>roll("names","empathy",10),
+          checkInfo("empathy",10)+"；成功额外获得信任"
+        ));
+      }
+      if(r){
+        lines.push(R("names"));
+        if(r.ok){
+          lines.push(
+            N("你没有说“我理解”。你记住了第一个名字，又记住第二个。\n念到第十七个时，小满举起手，像在一间已经拆掉的教室里。"),
+            V("empathy","共感","对。不是二十三份材料。是二十三次轮到自己时，举起的手。")
+          );
+        }else{
+          lines.push(
+            N("你想说一句足够温柔的话。说出口的却是：“请相信有关部门。”\n阿祁慢慢把名单折了回去。"),
+            V("empathy","共感","精彩。你把一把伞说成了一场雨。")
+          );
+        }
+        choices.push(...retry("names","empathy",10));
+        if(!r.ok && !has("people")){
+          choices.push(C("拿出自己的纸，请每个人亲手写下名字。",()=>{
+            addEvidence("people");state.flags.selfWritten=true;
+          },"不再要求信任你的安慰；用行动取得名单，无额外信任奖励"));
+        }
+      }
+      if(has("people")){
+        lines.push(N("名单留在你的掌心。小满给自己的名字添了一条狗。\n狗有六条腿。可能她觉得，四条跑得还不够快。"));
+      }
+    }
+    choices.push(back());
+    return scene("交谈 / 等候者","杯把断了，人还在。",lines,choices);
+  },
+
+  plate(){
+    const r=state.checks.plate;
+    return scene("调查 / 墙上的旧制度","黑漆下面，也许还有一种语法。",[
+      N("条例牌钉在售票窗旁。新刷的黑漆盖住了大半条文，边缘粘着一只飞蛾。\n它至少是在条例废止之前落上去的。"),
+      V("ruin","废墟感","旧东西不会消失。它们只是变成新东西不愿意承认的地基。"),
+      ...(!r ? [N("漆面下隐约透出“移送”“末航”“联署”几个字。你可以试着辨认旧漆的裂纹。")] : [
+        R("plate"),
+        ...(r.ok ? [
+          N("你从残存的编号往回推，读出第九条。\n涉案证物可以走临检移送程序，不受居民名册限制。若能证明公文伪造，并取得在岗职员联署，证人也可以。"),
+          V("logic","逻辑","制度给东西留了一扇门。给人留的那扇，还多装了一把锁。")
+        ] : [
+          N("你确信自己看见了“所有人均有离岸权”。再看一次，那其实是“所有费用均由离岸方承担”。"),
+          V("ruin","废墟感","抱歉。刚才读到的是愿望，不是油漆。")
+        ])
+      ]),
+      ...(state.flags.scraped ? [
+        N("你用徽章边缘刮开黑漆，指关节被铁皮划了一道。\n第九条终于露出来：证物可移送；证人须伪造证据与职员联署。字很小，条件很大。")
+      ] : [])
+    ],[
+      ...(!r ? [C("循着旧漆裂纹，辨认被遮住的条例。",()=>roll("plate","ruin",10),checkInfo("ruin",10))] : []),
+      ...(!has("clause") ? retry("plate","ruin",10) : []),
+      ...(r && !r.ok && !has("clause") ? [
+        C("用徽章边缘，把黑漆一点点刮开。",()=>{
+          state.flags.scraped=true;addEvidence("clause");
+        },"必定取得条款；徽章磨损，手指划伤。没有再次检定")
+      ] : []),
+      back()
+    ]);
+  },
+
+  clerk(){
+    const talked=state.flags.clerkTalk;
+    return scene("交谈 / 留在窗口里的人","一张不够大的好意。",[
+      N("郁白的茶杯里漂着一根细细的茶梗。它已经泡得没有颜色了。\n他仍然偶尔喝一口，像在履行某种早年签订的合同。"),
+      ...(!talked ? [
+        V("human","郁白","“我还有十一天退休。上面要的是空区交割。我不给附签，他们就会找别人。”"),
+        V("logic","逻辑","他在解释一台机器。也在请求你把他当作一颗螺丝。")
+      ] : [
+        V("human","郁白","“我女儿以前也这么高。”"),
+        N("他说的是小满的身高，不是水位。你花了一秒才确认这一点。"),
+        N("他从抽屉里推出一张应急乘员票。可额外带一人离岸；票根背面是结班回执，要求你确认南汊其余居民均已注销。"),
+        V("human","郁白","“孩子可以走。别问我这够不够。我知道不够。”"),
+        ...(has("seal") ? [
+          V("logic","逻辑","他尚未附签。那份交割还缺一个在场的人，来假装它真的发生过。")
+        ] : [])
+      ])
+    ],[
+      ...(!talked ? [
+        C("“那你为什么还没签？”",()=>{state.flags.clerkTalk=true},"听完他的回答")
+      ] : []),
+      ...(talked && has("seal") && !state.flags.clerkConfronted ? [
+        C("把同一枚钢印的压痕指给他看。",()=>{
+          state.flags.clerkConfronted=true;
+          toast("郁白把退休申请压在了死亡清册下面。");
+        },"让他知道：你能证明这不只是录入错误")
+      ] : []),
+      ...(state.flags.clerkConfronted ? [
+        C("“如果它是一桩案子，你愿意做在场的人吗？”",()=>{
+          state.flags.clerkAlly=true;go("hub");
+        },state.flags.clerkAlly?"他已经答应：只签亲眼看见的事实":"郁白会同意联署，但你仍需完整线索与居民信任")
+      ] : []),
+      back()
+    ]);
+  },
+
+  final(){
+    const r=state.checks.legal;
+    const ready=legalReady();
+    const bonus=legalBonus();
+    const lines=[
+      N("船汽笛响了一声。不是催促，是提醒岸上的人：机器也有自己的工作时间。"),
+      N("郁白摆出三样东西：结班回执、空白移送单、铁门钥匙。\n钥匙被一根短链拴在桌腿上。"),
+      V("body","血肉","桌腿是木头。记住这条信息。"),
+      V("human","郁白","“签了以后，就不是讨论了。”")
+    ];
+    const choices=[];
+    if(!r){
+      lines.push(V("logic","逻辑",ready
+        ? "未来日期、活人名单、移送条款。可以构成文书争议。让他们先登船，再去北岸争论人的定义。"
+        : "你可以寻找手续上的出口。但至少需要：异常日期、居民名单、移送条款，以及有人愿意按你的安排登船。"));
+      choices.push(C(
+        "启动文书争议，将二十三人列入临检移送。",
+        ()=>roll("legal","logic",12,bonus),
+        ready ? checkInfo("logic",12,bonus)+"；失败后仍可改选其他方案"
+              : "需要：未来日期 + 二十三个名字 + 第九条 + 至少 1 点信任",
+        !ready,"special"
+      ));
+    }else{
+      lines.push(R("legal"));
+      if(r.ok){
+        lines.push(
+          N("你引用第九条，附上名单，把死亡时间圈了两遍。\n郁白检查了每一页。他没有找到可以把它推回来的地方。"),
+          V("human","郁白","“可以。以……涉案证物的名义。到北岸会重新核验。”"),
+          V("empathy","共感","他们能上船了。\n但你最好记得，到了另一岸，要把这个词从他们身上撕下来。")
+        );
+        choices.push(C(
+          "签署证物移送单。先把所有人带离这里。",
+          ()=>finish("cargo"),
+          "结局选择 / 二十三人登船；身份被暂时列为涉案证物",false,"special"
+        ));
+        const witnessReady=has("seal") && state.trust>=2 && state.flags.clerkAlly;
+        if(witnessReady){
+          lines.push(
+            V("logic","逻辑","等等。钢印证明伪造，郁白愿意联署，居民愿意作证。第九条的后半句，并没有被废止。"),
+            V("empathy","共感","把“物”划掉。你知道该写什么。")
+          );
+          choices.unshift(C(
+            "划掉“证物”，写上“证人”。把第二支笔递给郁白。",
+            ()=>finish("witness"),
+            "发现额外出口 / 伪造证据、居民信任、在岗联署均已具备",false,"special"
+          ));
+        }else if(has("seal")){
+          lines.push(V("logic","逻辑","证人通道仍然存在。但它要求至少 2 点居民信任，以及郁白明确同意联署。最终落笔前，还可以回去。"));
+        }
+      }else{
+        lines.push(
+          N("你引用了正确的条款，却把移送目的地写进了申请人一栏。\n郁白看着那几个字。你们同时明白，他现在有了拒绝的理由。"),
+          V("human","郁白","“这份不行。你可以重填，也可以……换一种办法。”")
+        );
+        choices.push(...retry("legal","logic",12,bonus));
+      }
+    }
+    choices.push(
+      C("接受唯一的应急船票，把小满送上船。",()=>{
+        state.flags.clerkTalk=true;finish("one");
+      },"结局选择 / 小满离岸；签署其余二十二人的注销回执",false,"danger"),
+      C("不再填写。扯断钥匙链，打开铁门。",()=>go("force"),
+        "行动路线 / 所有人都能登船；血肉检定决定你付出的身体代价",false,"danger"),
+      C("把笔放下。我还需要确认一些事。",()=>go("hub"),"返回调查；已完成的检定不会重置")
+    );
+    return scene("03 / 落笔之前","纸只有两面，事情没有。",lines,choices);
+  },
+
+  force(){
+    const r=state.checks.force;
+    const bonus=Math.min(Math.max(state.trust,0),2);
+    if(!r){
+      return scene("行动 / 不被允许的出口","桌腿的意见，不重要。",[
+        N("你走到桌边。郁白抬头，以为你终于要签字。"),
+        N("铁门钥匙的链条穿过桌腿上的铜环。只要铜环脱落，你就能打开栅门。\n船上的水手已经看见你了。他没有离开跳板。"),
+        V("body","血肉","有些论证不需要完整的句子。"),
+        N("成功，你保住手腕。失败，你用受伤的手把事情做完。无论骰子怎样，人都会上船。\n但从你动手起，你就不再是这里的核验员。")
+      ],[
+        C("把徽章垫进铜环，用整个身体去扳。",()=>{
+          roll("force","body",11,bonus);
+        },checkInfo("body",11,bonus)+"；不可撤回",false,"danger"),
+        C("松开手。重新考虑。",()=>go("final"),"尚未产生后果")
+      ]);
+    }
+    return scene("行动 / 木头裂开的声音","它终于不是一张办公桌了。",[
+      R("force"),
+      N(r.ok
+        ? "铜环连着一块木头被你扯了下来。你踉跄两步，握住了钥匙。\n徽章弯成一个再也不能别回衣领的形状。"
+        : "第一下没能扯开铜环。疼痛沿手腕炸开。\n第二下，你把整张桌子掀翻了。木头断裂，钥匙掉在地上。小满跑过来，替你捡起来。"),
+      V("human","郁白","“码头摄像头坏了。”"),
+      N("你看向角落。摄像头的红灯仍然亮着。\n郁白拿起一块擦章布，盖了上去。"),
+      V("empathy","共感","不是所有人都能先做第一个。但有时候，他们能做第二个。")
+    ],[
+      C("打开铁门。让二十三个人通过。",()=>finish("gate"),"完成这一章",false,"special")
+    ]);
+  },
+
+  ending(){
+    const endings={
+      one:{
+        number:"I",title:"一个人的救生艇",stamp:"结班完成",
+        quote:"你救下了一个人。<br>这句话是真的。它也不完整。",
+        lines:[
+          N("阿祁蹲下来，把那只断了把的搪瓷杯塞进小满的书包。\n她没有拥抱你，也没有责骂你。她只是反复确认北岸接待所的名字。"),
+          V("human","沈小满","“妈妈坐下一班吗？”"),
+          N("你知道没有下一班。\n你说：“先上去。”"),
+          N("船离开以后，你在回执上签了字。二十二个人仍站在你身后，而纸上，他们已经不在那里。"),
+          V("logic","逻辑","救下一个，大于没有救下。"),
+          V("empathy","共感","不要用算式替她回答。"),
+          N("本章结束时，潮水尚未漫过门槛。\n你还有时间看着他们。这不是宽恕。")
+        ],
+        result:"1 人离岸 · 22 人仍被困 · 注销回执已签署 · 职位保留"
+      },
+      cargo:{
+        number:"II",title:"以物之名",stamp:"准予移送",
+        quote:"他们被批准离开。<br>理由不是他们还活着。",
+        lines:[
+          N("郁白在移送单上盖了章。\n二十三人，按一批计。不得拆分。不得遗失。"),
+          N("水手看了看纸，又看了看阿祁。\n“货放下面。”他说。\n你挡在舱口：“怕水。这批放上面。”"),
+          V("logic","逻辑","漂亮。一次正确使用了错误分类的行政行为。"),
+          V("empathy","共感","闭嘴。至少等他们听不见的时候再夸自己。"),
+          N("船驶离南汊。阿祁拿着移送单，一遍一遍读自己的名字。\n“到了那边，”她问，“我们什么时候能不算东西？”"),
+          N("你没有说“很快”。\n你在手记的下一页写下：北岸复核。二十三名证人。明早第一件事。")
+        ],
+        result:"23 人离岸 · 身份待复核 · 你是移送责任人 · 注销程序受到质疑"
+      },
+      gate:{
+        number:"III",title:"闸外的人",stamp:"越权离岗",
+        quote:"门开了。<br>接下来，轮到你的案卷被打开。",
+        lines:[
+          N("第一位老人通过铁门时，朝你点了一下头。他不知道你的名字。你也没有告诉他。"),
+          N("阿祁让小满数人数。数到二十三，她又从头数了一遍。\n水手解开缆绳。他决定没看见那份不存在的名单。"),
+          N(state.flags.injured
+            ? "你的手腕肿得无法扣上外套。阿祁把干毛巾撕成长条，替你固定住。\n你第一次真正用上了自己递出去的东西。"
+            : "你的手还在发抖。不是因为受伤。身体只是比道德晚一点明白刚才发生了什么。"),
+          V("body","血肉","还站着。够了。剩下的以后再疼。"),
+          N("弯掉的徽章留在临检所地板上。明天，它会被拍照、编号，装进透明袋。\n那将是你在这份工作里得到的最正式的一次承认。"),
+          N("你跟着二十三个人上了船。\n没有人为你预留位置。阿祁往旁边挪了一点。")
+        ],
+        result:`23 人离岸 · 徽章遗失 · 将面临越权调查 · ${state.flags.injured?"手腕受伤":"没有重伤"}`
+      },
+      witness:{
+        number:"IV",title:"仍然活着",stamp:"证人移送",
+        quote:"不是货物，不是统计误差。<br>是证人。",
+        lines:[
+          N("你把“证物”的最后一个字划掉。\n郁白盯着新的那个字，看了很久。"),
+          V("human","郁白","“证人要出庭的。”"),
+          V("human","阿祁","“那就给我们一个能到场的地址。”"),
+          N("他签了名。笔尖在退休申请上洇出一个小小的墨点。\n没有音乐响起。城市不会为一个螺丝松动而演奏。"),
+          N("二十三人以证人身份登船。死亡清册、交割单，以及那枚钢印的拓痕，被封进同一个文件袋。"),
+          V("logic","逻辑","这只能阻止今夜的注销。财政处仍然可以争辩，听证会仍然可以拖延。"),
+          V("empathy","共感","我知道。\n但他们可以亲自坐在那里，听对方撒谎。"),
+          N("小满把那条六条腿的狗画在了你的手记封面上。\n“现在不用跑那么快了。”她说。"),
+          N("你没有告诉她，狗也可以只是想跑。\n这个知识，应该留给一个更好的早晨。")
+        ],
+        result:"23 人以证人身份离岸 · 伪造证据封存 · 郁白联署 · 后续调查开启"
+      }
+    };
+    const e=endings[state.ending] || endings.cargo;
+    return {
+      ...scene("第一章 / 完",e.title,e.lines,[
+        C("翻开手记，查看留下的证据。",openJournal,"不会重置这一结局"),
+        C("另一种过去，另一个雨夜。",reset,"重新开始；将清除本轮进度")
+      ]),
+      ending:e
+    };
+  }
+};
+
+let actions=[];
+
+function render(){
+  const current=(scenes[state.scene] || scenes.start)();
+  const profile=profiles[state.profile];
+  $("status").innerHTML=profile
+    ? Object.entries(profile.stats).map(([k,v])=>`<span>${skillNames[k]} <strong>${v}</strong></span>`).join("")
+      + `<span class="ember">余火 ${"●".repeat(state.nerve)}${"○".repeat(2-state.nerve)}</span>`
+      + `<span>信任 <strong>${state.trust}</strong></span>`
+    : `<span>雨夜档案 001</span><span>2D6 检定</span><span>失败也会继续故事</span>`;
+
+  let html=`<div class="eyebrow">${escapeHTML(current.eyebrow)}</div>`;
+  if(current.ending){
+    html+=`<div class="end-label">结局 ${current.ending.number} / IV</div>`;
+  }
+  html+=`<h2>${escapeHTML(current.title)}</h2><div class="prose">`;
+
+  for(const line of current.lines){
+    if(line.kind==="check"){
+      const r=state.checks[line.id];
+      if(!r)continue;
+      html+=`<div class="check ${r.ok?"":"fail"}">
+        <b>${escapeHTML(skillNames[r.skill])}检定 · ${r.ok?"成功":"失败"}</b>
+        <div class="dice">[${r.dice[0]}] [${r.dice[1]}]</div>
+        <div>骰点 ${r.dice[0]+r.dice[1]} + 能力 ${stats()[r.skill]}${r.bonus?` + 情境 ${r.bonus}`:""} = ${r.total} / 目标 ${r.target}</div>
+        <small>双 1 必败，双 6 必成。${r.tries>1?"已消耗余火重试。":"结果已经保存。"}</small>
+      </div>`;
+    }else if(line.kind==="narrator"){
+      html+=`<p class="narrator">${escapeHTML(line.text)}</p>`;
+    }else{
+      html+=`<div class="line ${line.kind}">
+        <span class="speaker">${escapeHTML(line.speaker)}</span>
+        <p>${escapeHTML(line.text)}</p>
+      </div>`;
+    }
+  }
+  html+="</div>";
+  if(current.ending){
+    html+=`<div class="summary">${escapeHTML(current.ending.result)}<br>本轮发现 ${state.evidence.length} / 4 条线索；剩余余火 ${state.nerve}。</div>`;
+  }
+  $("story").innerHTML=html;
+
+  actions=current.choices;
+  $("choices").innerHTML=actions.map((a,i)=>`
+    <button class="choice ${a.style||""}" data-choice="${i}" ${a.disabled?"disabled":""}>
+      <span class="number">${String(i+1).padStart(2,"0")}</span>
+      <span><span class="label">${escapeHTML(a.label)}</span>
+      ${a.hint?`<span class="hint">${escapeHTML(a.hint)}</span>`:""}</span>
+    </button>
+  `).join("");
+
+  $("clueCount").textContent=state.evidence.length;
+  $("evidenceStrip").innerHTML=state.evidence.filter(id=>evidenceData[id])
+    .map(id=>`<span class="tag">＋ ${escapeHTML(evidenceData[id].title)}</span>`).join("");
+
+  $("artStamp").textContent=current.ending?.stamp || "尚未生效";
+  $("artQuote").innerHTML=current.ending?.quote || "这座城没有杀死任何人。<br>它只是提前完成了统计。";
+}
+
+function act(index){
+  const a=actions[index];
+  if(!a || a.disabled)return;
+  const oldScene=state.scene;
+  a.run();
+  save();
+  render();
+  if(oldScene!==state.scene){
+    if(matchMedia("(max-width:620px)").matches){
+      document.querySelector(".main").scrollIntoView({behavior:"auto",block:"start"});
+    }else{
+      window.scrollTo({top:0,behavior:"auto"});
+    }
+  }
+}
+
+function openJournal(){
+  const clues=state.evidence.filter(id=>evidenceData[id]).map(id=>{
+    const e=evidenceData[id];
+    return `<section class="journal-item"><h4>${escapeHTML(e.title)}</h4><p>${escapeHTML(e.text)}</p></section>`;
+  }).join("");
+  const notes=[];
+  if(state.flags.kind)notes.push("你先递出了毛巾，再询问姓名。");
+  if(state.flags.apologized)notes.push("你为自己的盘问道过歉。道歉没有倒转时间，但改变了接下来的谈话。");
+  if(state.flags.selfWritten)notes.push("安慰失败之后，你让大家亲手写下名字。");
+  if(state.flags.clerkAlly)notes.push("郁白答应联署：只签他亲眼见过的事实。");
+  if(state.flags.scraped)notes.push("徽章被你用来刮开条例上的黑漆。");
+  if(state.flags.badgeLost)notes.push("徽章留在了临检所。你带走了钥匙。");
+  $("journalBody").innerHTML=
+    (clues || `<p class="journal-empty">目前只有一页空白。<br>空白在这里不是无辜，只是尚未填写。</p>`)
+    + (notes.length?`<section class="journal-item"><h4>你做过的事</h4><p>${notes.map(escapeHTML).join("<br><br>")}</p></section>`:"")
+    + `<section class="journal-item"><h4>检定规则</h4><p>掷两枚六面骰，加上对应能力与情境奖励。达到目标即成功；双 1 必败，双 6 必成。<br><br>失败的普通检定可消耗 1 点余火重试一次。强行开门不能重试，但失败不会阻止居民登船。调查不会因现实时间流逝而失效。</p></section>`;
+  if(!$("journal").open)$("journal").showModal();
+}
+
+function reset(){
+  if(!confirm("重新开始这个雨夜？本轮存档会被覆盖。"))return;
+  if($("journal").open)$("journal").close();
+  state=fresh();
+  save();
+  render();
+  window.scrollTo({top:0,behavior:"auto"});
+}
+
+$("choices").addEventListener("click",event=>{
+  const button=event.target.closest("[data-choice]");
+  if(button)act(Number(button.dataset.choice));
+});
+$("journalBtn").addEventListener("click",openJournal);
+$("closeJournal").addEventListener("click",()=>$("journal").close());
+$("resetBtn").addEventListener("click",reset);
+document.addEventListener("keydown",event=>{
+  if(event.repeat || event.ctrlKey || event.metaKey || event.altKey || $("journal").open)return;
+  if(["INPUT","TEXTAREA","SELECT"].includes(document.activeElement.tagName))return;
+  if(/^[1-9]$/.test(event.key)){
+    event.preventDefault();
+    act(Number(event.key)-1);
+  }
+});
+
+render();
+if(restored){
+  $("saveStatus").textContent="已恢复案卷 / 雨还没有停";
+  toast("找回了你上次留下的那一页。");
+}
+</script>
+
+
+</body></html>
