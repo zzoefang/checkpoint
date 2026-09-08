@@ -1,0 +1,1037 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta name="x-poe-datastore-behavior" content="local_only"><meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval' data: blob: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://code.jquery.com https://unpkg.com https://d3js.org https://threejs.org https://cdn.plot.ly https://stackpath.bootstrapcdn.com https://maps.googleapis.com https://cdn.tailwindcss.com https://ajax.googleapis.com https://kit.fontawesome.com https://cdn.datatables.net https://maxcdn.bootstrapcdn.com https://code.highcharts.com https://tako-static-assets-production.s3.amazonaws.com https://www.youtube.com https://fonts.googleapis.com https://fonts.gstatic.com https://pfst.cf2.poecdn.net https://puc.poecdn.net https://i.imgur.com https://wikimedia.org https://*.icons8.com https://*.giphy.com https://picsum.photos https://images.unsplash.com; frame-src 'self' https://www.youtube.com https://trytako.com; child-src 'self'; manifest-src 'self'; worker-src 'self'; upgrade-insecure-requests; block-all-mixed-content;">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>涅瓦河：未竟之书</title>
+<style>
+:root{
+  --bg:#151817;--paper:#dfd0ae;--muted:#a99f88;--gold:#c5a56b;
+  --line:#756447;--red:#be8073;--green:#91aa94;--panel:#20241f;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;background:var(--bg);color:var(--paper);
+  font-family:"Noto Serif SC","Songti SC",SimSun,serif;
+  line-height:1.7;
+}
+body:before{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:20;
+  opacity:.12;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.72' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Cpath fill='%23fff' filter='url(%23n)' opacity='.5' d='M0 0h180v180H0z'/%3E%3C/svg%3E");
+}
+button{font:inherit}
+button{
+  cursor:pointer;color:var(--paper);background:#282b24;
+  border:1px solid #625940;border-radius:3px;transition:.18s;
+}
+button:hover:not(:disabled){
+  background:#36392e;border-color:var(--gold);transform:translateY(-1px);
+}
+button:focus-visible{outline:2px solid var(--gold);outline-offset:4px}
+button:disabled{cursor:not-allowed;opacity:.4}
+small,.muted{color:var(--muted)}
+header{
+  max-width:1440px;margin:auto;padding:26px 28px 16px;
+  display:flex;align-items:center;justify-content:space-between;gap:20px;
+}
+.eyebrow{letter-spacing:.25em;font-size:11px;color:var(--gold)}
+h1{font-size:30px;font-weight:500;letter-spacing:.12em;margin:4px 0}
+.subtitle{color:var(--muted);font-size:12px}
+.tools{display:flex;gap:8px;flex-wrap:wrap}
+.tools button{padding:7px 12px;font-size:12px}
+.stats{
+  max-width:1384px;margin:0 auto 18px;display:grid;
+  grid-template-columns:1.5fr repeat(4,1fr);border:1px solid var(--line);
+  background:#1d211d;
+}
+.stat{padding:12px 16px;border-right:1px solid #494531}
+.stat:last-child{border:0}
+.stat span{display:block;font-size:11px;color:var(--muted)}
+.stat strong{font-weight:400;font-size:20px}
+main{
+  max-width:1440px;margin:auto;padding:0 28px 28px;
+  display:grid;grid-template-columns:260px minmax(330px,1fr) 290px;
+  gap:18px;align-items:start;
+}
+.panel{background:var(--panel);border:1px solid #544f3b}
+.panel-title{
+  padding:12px 15px;border-bottom:1px solid #544f3b;
+  display:flex;align-items:center;justify-content:space-between;font-size:14px;
+}
+.panel-title small{font-size:10px;letter-spacing:.1em}
+.city{height:215px;overflow:hidden;border-bottom:1px solid #544f3b;background:#242c2a}
+.city svg{width:100%;height:100%}
+.locations{padding:10px;display:grid;gap:7px}
+.place{text-align:left;padding:9px 11px;position:relative}
+.place.active{border-color:var(--gold);background:#3c3b2d}
+.place b{display:block;font-size:14px;font-weight:400}
+.place small{display:block;font-size:11px}
+.place .number{float:right;color:#ad9261}
+.travel-note{font-size:11px;padding:0 14px 13px;color:var(--muted)}
+.scene-head{padding:15px 20px;border-bottom:1px solid #544f3b}
+.scene-head h2{font-size:21px;font-weight:400;margin:3px 0}
+.scene-head small{font-size:11px}
+.stage{
+  height:280px;position:relative;overflow:hidden;
+  background:linear-gradient(#293638,#56605b 65%,#292c29);
+}
+.stage svg.backdrop{position:absolute;inset:0;width:100%;height:100%}
+.stage:after{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(90deg,#131a1780,transparent 45%,#131a1770),
+             linear-gradient(0deg,#151a19,transparent 40%);
+}
+.portrait{position:absolute;right:8%;bottom:-10px;height:280px;width:196px}
+.portrait svg{width:100%;height:100%;filter:drop-shadow(-12px 5px 12px #0007)}
+.stage-caption{position:absolute;left:22px;bottom:20px;z-index:2;max-width:48%}
+.stage-caption strong{font-size:21px;font-weight:400;display:block;text-shadow:0 2px 5px #000}
+.stage-caption span{font-size:12px;color:#c7bfa9}
+.snow{position:absolute;inset:-100% 0 0;pointer-events:none;z-index:3;opacity:.35;
+  background-image:radial-gradient(1px 1px at 20px 30px,#fff 99%,transparent),
+    radial-gradient(1.5px 1.5px at 80px 80px,#fff 99%,transparent);
+  background-size:110px 110px,173px 173px;animation:snow 17s linear infinite;
+}
+@keyframes snow{to{transform:translateY(110px)}}
+.story{padding:20px 24px 12px;min-height:165px}
+.story h3{margin:0 0 10px;font-weight:400;font-size:18px;color:#eadbb5}
+.story p{margin:0;font-size:15px;line-height:1.95}
+.choices{padding:0 20px 20px;display:grid;gap:9px}
+.choice{padding:11px 14px;text-align:left;display:flex;gap:12px;align-items:start}
+.choice .key{
+  border:1px solid #6c6248;min-width:23px;height:23px;
+  font-size:12px;text-align:center;margin-top:2px;color:var(--gold);
+}
+.choice b{font-size:14px;font-weight:400;display:block}
+.choice small{font-size:11px;display:block;margin-top:3px}
+.outcome{
+  margin:0 20px 16px;padding:12px 14px;border-left:2px solid var(--gold);
+  background:#c5a56b0b;font-size:13px;
+}
+.outcome:empty{display:none}
+.cast-list{padding:10px}
+.person{
+  width:100%;display:grid;grid-template-columns:44px 1fr;
+  gap:10px;text-align:left;padding:9px;margin-bottom:7px;
+}
+.avatar{height:55px;overflow:hidden;background:#404339;border:1px solid #706248}
+.avatar svg{width:54px;height:78px;margin-left:-5px}
+.person-name{font-size:12px;display:flex;justify-content:space-between;gap:4px}
+.person-name em{font-size:10px;color:var(--muted);font-style:normal}
+.bar{height:3px;background:#111915;margin:7px 0 4px}
+.bar i{display:block;height:100%;background:var(--gold);transition:width .4s}
+.person small{font-size:10px}
+.rest{margin:0 10px 12px;width:calc(100% - 20px);padding:10px;font-size:12px}
+.journal{margin-top:16px}
+.entries{padding:12px 15px;max-height:290px;overflow:auto}
+.entry{font-size:12px;margin-bottom:12px;border-bottom:1px dashed #544f3b;padding-bottom:10px}
+.entry small{display:block;color:var(--gold);font-size:10px}
+footer{text-align:center;padding:0 20px 25px;font-size:11px;color:#948b75}
+dialog{
+  width:min(760px,calc(100% - 28px));max-height:88vh;overflow:auto;
+  background:#e0d2b1;color:#302c24;border:1px solid #b69861;
+  padding:30px;box-shadow:0 25px 100px #000a;
+}
+dialog::backdrop{background:#080e0cd9}
+dialog h2{font-size:27px;font-weight:400;margin:0 0 15px}
+dialog p{font-size:14px}
+dialog button{padding:9px 18px;margin:8px 8px 0 0;background:#343a30;color:#e4d5b1}
+dialog .muted{color:#73684e}
+.ending-card{border-top:1px solid #9b8b6a;padding:15px 0;display:flex;gap:16px}
+.ending-card .end-face{width:65px;min-width:65px;height:88px;overflow:hidden;background:#b3ad96}
+.end-face svg{width:75px;height:107px;margin-left:-5px}
+.ending-card h3{font-size:16px;margin:0 0 6px}
+.ending-card p{font-size:13px;margin:0}
+.toast{
+  position:fixed;bottom:22px;left:50%;transform:translateX(-50%);
+  background:#dfd0ae;color:#272e25;border:1px solid #a58e61;
+  padding:10px 18px;z-index:40;font-size:13px;box-shadow:0 5px 25px #0005;
+  max-width:90vw;
+}
+@media(max-width:1100px){
+  main{grid-template-columns:220px 1fr}
+  .right{grid-column:1/-1;display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  .journal{margin-top:0}
+  .cast-list{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+  .person{margin:0}
+  .stats{margin:0 28px 18px}
+}
+@media(max-width:650px){
+  header{padding:18px 15px;align-items:start}
+  h1{font-size:23px}.subtitle{font-size:10px}.tools{max-width:105px}
+  .tools button{padding:5px 8px}
+  .stats{margin:0 14px 14px;grid-template-columns:repeat(4,1fr)}
+  .stat:first-child{grid-column:1/-1;border-bottom:1px solid #494531}
+  .stat:first-child span,.stat:first-child strong{display:inline;margin-right:12px}
+  .stat{padding:8px 10px}.stat strong{font-size:17px}
+  main{padding:0 14px 18px;display:flex;flex-direction:column;gap:14px}
+  main>.panel,main>.right{width:100%}
+  .city{height:100px}
+  .locations{grid-template-columns:repeat(3,1fr);gap:5px}
+  .place{padding:7px}.place b{font-size:11px}.place small{font-size:9px}
+  .travel-note{padding-bottom:8px}
+  .right{display:flex;flex-direction:column;gap:14px}
+  .stage{height:240px}.portrait{height:250px;right:3%}
+  .stage-caption{left:16px}.stage-caption strong{font-size:18px}
+  .story{padding:17px}.story p{font-size:14px}
+  .choices{padding:0 14px 16px}.choice{padding:10px}
+  dialog{padding:22px}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*:before,*:after{animation:none!important;transition:none!important}
+}
+</style>
+</head>
+<body>
+<header>
+  <div>
+    <div class="eyebrow">НЕВА · A BOOK OF UNFINISHED LIVES</div>
+    <h1>涅瓦河：未竟之书</h1>
+    <div class="subtitle">六日之内，听见六个人尚未说完的话。</div>
+  </div>
+  <div class="tools">
+    <button id="helpBtn">玩法</button>
+    <button id="endingBtn" hidden="">阅读终章</button>
+    <button id="restartBtn">重新开始</button>
+  </div>
+</header>
+
+<section class="stats" aria-label="当前状态">
+  <div class="stat"><span id="weather">薄雪 · 清晨</span><strong id="clock"></strong></div>
+  <div class="stat"><span>口袋 / 卢布</span><strong id="money"></strong></div>
+  <div class="stat"><span>良知</span><strong id="conscience"></strong></div>
+  <div class="stat"><span>心力</span><strong id="spirit"></strong></div>
+  <div class="stat"><span>警方疑心</span><strong id="suspicion"></strong></div>
+</section>
+
+<main>
+  <section class="panel">
+    <div class="panel-title">彼得堡手绘地图 <small>六处灯火</small></div>
+    <div class="city" id="city"></div>
+    <nav class="locations" id="locations" aria-label="地点"></nav>
+    <div class="travel-note">切换地点不消耗行动。每次选择消耗一格时间。</div>
+  </section>
+
+  <section class="panel" id="scenePanel">
+    <div class="scene-head">
+      <small id="sceneTag"></small>
+      <h2 id="placeTitle"></h2>
+    </div>
+    <div class="stage">
+      <svg class="backdrop" viewBox="0 0 680 280" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+        <defs>
+          <linearGradient id="sky" x2="0" y2="1">
+            <stop stop-color="#243338"></stop><stop offset="1" stop-color="#77786a"></stop>
+          </linearGradient>
+        </defs>
+        <path fill="url(#sky)" d="M0 0h680v280H0z"></path>
+        <circle cx="490" cy="49" r="25" fill="#d4ceb0" opacity=".3"></circle>
+        <g fill="#35403e" stroke="#899084" stroke-width=".7">
+          <path d="M0 75h110v145H0zM118 100h99v123h-99zM230 64h144v160H230zM386 91h126v143H386zM525 54h155v183H525z"></path>
+          <path d="M-5 75l57-23 61 23M224 64l80-22 74 22M520 54l78-23 88 23"></path>
+        </g>
+        <g fill="#c6a36a" opacity=".53">
+          <path d="M20 101h13v24H20zM61 102h13v24H61zM21 149h13v23H21zM155 125h13v21h-13zM270 90h14v24h-14zM313 91h14v24h-14zM313 143h14v24h-14zM424 119h13v23h-13zM465 164h13v23h-13zM556 81h13v22h-13zM603 125h13v24h-13z"></path>
+        </g>
+        <path d="M0 225Q280 201 680 244V280H0" fill="#94988b"></path>
+        <path d="M0 238Q320 215 680 254" stroke="#c5c5af" fill="none" opacity=".4"></path>
+        <g stroke="#222b28" stroke-width="5" fill="none">
+          <path d="M98 250V98M83 117h30M91 97v-16h15v16"></path>
+          <path d="M470 252v-94"></path>
+        </g>
+        <path d="M87 84h23l-4 28H91z" fill="#c8aa6a" opacity=".6"></path>
+        <path d="M0 266l680-9" stroke="#293430" stroke-width="13"></path>
+      </svg>
+      <div class="portrait" id="portrait"></div>
+      <div class="stage-caption"><strong id="charName"></strong><span id="charSubtitle"></span></div>
+      <div class="snow"></div>
+    </div>
+    <div class="story" id="story"></div>
+    <div class="outcome" id="outcome" role="status" aria-live="polite"></div>
+    <div class="choices" id="choices"></div>
+  </section>
+
+  <aside class="right">
+    <section class="panel">
+      <div class="panel-title">尚未合上的命运 <small>点击人物前往</small></div>
+      <div class="cast-list" id="cast"></div>
+      <button class="rest" id="restBtn">抄写一页书稿 · 心力 +2 / 卢布 +1 / 时间 −1</button>
+    </section>
+    <section class="panel journal">
+      <div class="panel-title">无名抄写员的手记 <small>自动存档</small></div>
+      <div class="entries" id="journal" aria-live="polite"></div>
+    </section>
+  </aside>
+</main>
+
+<footer>跨作品架空叙事 · 对话均为本游戏创作，非原著引文 · 选择快捷键 1 / 2 / 3</footer>
+<dialog id="modal"></dialog>
+<div class="toast" id="toast" hidden="" role="status"></div>
+
+<script>
+"use strict";
+
+const $ = id => document.getElementById(id);
+const SAVE = "neva-unfinished-v1";
+
+const names = ["rodion", "sonya", "myshkin", "nastasya", "ivan", "alyosha"];
+
+const people = {
+  rodion: {
+    name: "拉斯柯尔尼科夫",
+    short: "罗季昂",
+    place: "干草广场阁楼",
+    role: "把自己交给一个可怕思想的青年",
+    source: "《罪与罚》",
+    color: "#514e42",
+    hair: "#352d27",
+    skin: "#c7b69b",
+    type: "student",
+    endings: [
+      "他离开了阁楼，仍把人群看成一道需要证明的题。你的手记停在那扇再未打开的门前。",
+      "他走到警署的台阶下，却没有进去。索尼娅坐在不远处。至少这一回，他没有独自离开。",
+      "他终于决定说出真相，不再借一种理论逃避具体的人。前路漫长，责任却第一次有了名字。"
+    ]
+  },
+  sonya: {
+    name: "索尼娅",
+    short: "索尼娅",
+    place: "运河边出租屋",
+    role: "也需要被照顾的照顾者",
+    source: "《罪与罚》",
+    color: "#675b45",
+    hair: "#574434",
+    skin: "#d8bfa2",
+    type: "scarf",
+    endings: [
+      "她把最后一块面包留给别人，又一次缩回寒冷的房间。城里有人赞美她的善良，却无人替她生火。",
+      "屋里的灯终于没有熄灭。她仍艰难地生活，但有了可以敲门求助的邻人。",
+      "她找到一份抄写与缝补的活计，也学会为自己留下一份食物。她不再只作为别人的救赎存在。"
+    ]
+  },
+  myshkin: {
+    name: "梅什金公爵",
+    short: "梅什金",
+    place: "积雪的花园",
+    role: "不愿把怜悯误认作爱情的人",
+    source: "《白痴》",
+    color: "#63716a",
+    hair: "#a68b60",
+    skin: "#d5c5a9",
+    type: "prince",
+    endings: [
+      "他试图替每个人承担痛苦，最终连自己的声音也听不清了。花园里的长椅空了下来。",
+      "他离开了喧闹的客厅，承认善意不能自动成为答案。有人愿意与他继续通信。",
+      "他学会先问对方愿不愿意，再伸出手。他仍然温柔，却不再把自己许诺成万能的庇护。"
+    ]
+  },
+  nastasya: {
+    name: "娜斯塔霞",
+    short: "娜斯塔霞",
+    place: "烛光中的客厅",
+    role: "拒绝被估价、被裁决、被拯救",
+    source: "《白痴》",
+    color: "#493a3b",
+    hair: "#292523",
+    skin: "#dac0ac",
+    type: "lady",
+    endings: [
+      "她在旁人的争夺与流言中失去了退路。你没有得知她的去向，只见报纸把她写成一个故事。",
+      "她推迟了那场决定命运的聚会。桌上仍有未拆的信，但她开始自己选择回信的顺序。",
+      "她以自己的名字租下房间，带着亲手选定的行李离去。这一次，离开不是任何人的奖赏。"
+    ]
+  },
+  ivan: {
+    name: "伊万",
+    short: "伊万",
+    place: "烟雾缭绕的酒馆",
+    role: "追问世界、也被自己的问题追问",
+    source: "《卡拉马佐夫兄弟》",
+    color: "#3c4548",
+    hair: "#352f29",
+    skin: "#c6b299",
+    type: "thinker",
+    endings: [
+      "他的辩论越来越像独白。酒馆关门后，空椅子仍像坐着一个只有他能看见的听众。",
+      "他没有找到能让世界无罪的答案，却允许弟弟坐在身边，直到天亮。",
+      "他把锋利的论证放下片刻，决定承担自己能够承担的责任。疑问尚在，他不再只与影子争辩。"
+    ]
+  },
+  alyosha: {
+    name: "阿辽沙",
+    short: "阿辽沙",
+    place: "修院外的石阶",
+    role: "把信仰带回泥泞街道的青年",
+    source: "《卡拉马佐夫兄弟》",
+    color: "#4b5144",
+    hair: "#715537",
+    skin: "#d9c0a1",
+    type: "monk",
+    endings: [
+      "他还在安慰别人，却逐渐不敢承认自己的疲惫。那些没有兑现的约定在口袋里积成一叠纸。",
+      "孩子们记住了一个守约的大人。他的信念有时摇晃，却不再只停留于言辞。",
+      "他组织起一张互相照应的小小名单，也把自己的名字写了进去。善意成为可以轮流承担的日常。"
+    ]
+  }
+};
+
+function fresh() {
+  return {
+    version: 1,
+    day: 1,
+    ap: 3,
+    m: 9,
+    c: 5,
+    e: 7,
+    s: 0,
+    loc: "rodion",
+    done: false,
+    progress: Object.fromEntries(names.map(id => [id, 0])),
+    fate: Object.fromEntries(names.map(id => [id, 0])),
+    visited: Object.fromEntries(names.map(id => [id, 0])),
+    last: "",
+    logs: [
+      {
+        day: 1,
+        text: "我是一名无名抄写员。六天后，邮车将带我离开这座城。留下的时间，够听见多少个人？"
+      }
+    ]
+  };
+}
+
+let state = fresh();
+let loaded = false;
+let toastTimer;
+
+function portrait(id) {
+  const p = people[id];
+  const female = ["scarf", "lady"].includes(p.type);
+  const coat = p.color;
+  const hair = p.hair;
+  const skin = p.skin;
+
+  let clothing = "";
+  let head = "";
+
+  if (p.type === "student") {
+    clothing = `
+      <path d="M35 280l8-105 38-23 20 23 22-23 36 24 11 104" fill="${coat}"/>
+      <path d="M81 152l-10 44 26-17-12 69M123 153l11 42-25-16 12 101" stroke="#86775d" fill="none" stroke-width="3"/>
+      <path d="M88 157l15 21 13-20-3 64-18-2z" fill="#a29879"/>
+      <path d="M50 223l18-5 3 27-23 2" fill="#655e4d" stroke="#99896a"/>`;
+    head = `
+      <path d="M67 79Q65 29 102 34q42-1 37 57l-11-27-22-9-28 21z" fill="${hair}"/>
+      <path d="M69 60q30-21 65 1l-4-19q-33-15-59 3z" fill="#4b4b42"/>
+      <path d="M65 62q36-16 72 0l-1 8q-38-10-73 2z" fill="#303a35"/>`;
+  } else if (p.type === "scarf") {
+    clothing = `
+      <path d="M29 280l12-97 40-31h42l38 29 13 99" fill="${coat}"/>
+      <path d="M80 142L48 180l52 53 57-52-35-42" fill="#9d967d"/>
+      <path d="M54 181l47 31 49-32M66 171l35 29 37-30" stroke="#6e7564" fill="none"/>
+      <path d="M94 217l-12 63h36l-9-64" fill="#8c866e"/>`;
+    head = `
+      <path d="M57 134Q46 40 96 31q58-1 55 109l-25 25-8-24 18-55-15-33-38 6-17 39 17 51-16 12z" fill="#a69d81"/>
+      <path d="M72 78q23-35 57-8l-12-24-30 3z" fill="${hair}"/>
+      <path d="M58 131l14-54M143 139l-9-65" stroke="#d0bea0" fill="none" stroke-width="2"/>`;
+  } else if (p.type === "lady") {
+    clothing = `
+      <path d="M23 280l17-106 38-21 24 29 24-29 35 22 17 105" fill="${coat}"/>
+      <path d="M78 154l25 32 25-32 13 18-37 48-40-48" fill="#1e2927"/>
+      <path d="M83 159q18 47 41 1" fill="none" stroke="#c1a578" stroke-width="2"/>
+      <circle cx="103" cy="192" r="4" fill="#c7a267"/>
+      <path d="M44 185l21 95M158 187l-22 93" stroke="#796259" fill="none"/>`;
+    head = `
+      <path d="M63 89q-15-50 25-57 40-17 52 29l-6 63-13 8 9-50-25-24-31 21-3 46-12-9z" fill="${hair}"/>
+      <path d="M76 64q33-32 50 4M79 54q30-23 47 3" stroke="#655343" fill="none"/>
+      <circle cx="67" cy="110" r="3" fill="#d9b573"/>
+      <circle cx="134" cy="109" r="3" fill="#d9b573"/>`;
+  } else {
+    clothing = `
+      <path d="M30 280l12-104 39-24 20 15 21-15 38 25 14 103" fill="${coat}"/>
+      <path d="M83 151l18 17 20-17-10 69H92z" fill="${p.type === "monk" ? "#827c62" : "#c4b99c"}"/>
+      <path d="M81 153l-13 41 27-14M123 153l14 41-27-14" stroke="#9e977b" fill="none" stroke-width="2"/>
+      <path d="M102 209v71" stroke="#272e29" stroke-width="2"/>
+      <circle cx="110" cy="237" r="2" fill="#bda674"/>
+      ${
+        p.type === "monk"
+          ? `<path d="M91 165l12 47 14-47M103 204v22M97 214h12" stroke="#bda674" stroke-width="2" fill="none"/>`
+          : `<path d="M94 165l8 9 8-9-4 22 5 30-14-1 2-29z" fill="#464537"/>`
+      }`;
+    head = `
+      <path d="M66 88Q52 43 82 36q41-17 54 18l2 37-13-22-23-17-30 22z" fill="${hair}"/>
+      <path d="M72 57q22-24 50-8M71 66q29-27 56-9" stroke="#b29a74" opacity=".4" fill="none"/>
+      ${
+        p.type === "thinker"
+          ? `<path d="M78 121l9 15 17 8 17-13 7-16-8 26-18 9-21-13z" fill="${hair}" opacity=".6"/>`
+          : ""
+      }`;
+  }
+
+  return `<svg viewBox="0 0 200 280" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="${p.name}二维立绘">
+    <ellipse cx="102" cy="269" rx="76" ry="12" fill="#111a17" opacity=".3"/>
+    ${clothing}
+    <path d="M85 125v32l17 16 18-18-2-31" fill="${skin}"/>
+    <path d="M85 138q18 12 34-1v11q-19 18-34 0" fill="#685341" opacity=".35"/>
+    <ellipse cx="69" cy="99" rx="7" ry="12" fill="${skin}"/>
+    <ellipse cx="132" cy="99" rx="6" ry="12" fill="${skin}"/>
+    <path d="M71 70Q99 43 130 70l1 34q-3 34-29 42-27-7-31-39z" fill="${skin}"/>
+    <path d="M72 77l8 28 6 16 15 22q-28-7-30-35z" fill="#7e6852" opacity=".25"/>
+    <path d="M80 89l13-2M110 87l13 2" stroke="${hair}" stroke-width="2" fill="none"/>
+    <path d="M81 95q6-4 12 0M109 95q6-4 12 0" stroke="#514c40" stroke-width="1.5" fill="none"/>
+    <circle cx="88" cy="95" r="1.6" fill="#333c34"/>
+    <circle cx="115" cy="95" r="1.6" fill="#333c34"/>
+    <path d="M102 96l-4 17 7 1" fill="none" stroke="#9b8269" stroke-width="1.5"/>
+    <path d="M92 124q10 ${female ? 3 : 1} 20-1" stroke="#8b6456" stroke-width="1.6" fill="none"/>
+    <path d="M80 103l12 2M111 105l11-2" stroke="#8d7860" opacity=".45"/>
+    ${head}
+    <path d="M46 274q2-28 13-36l18 7 7 29M157 275q-2-28-13-36l-18 7-7 29" fill="${coat}" stroke="#8f8165"/>
+    <path d="M78 267q17-14 28-8l15 9-17 12H81z" fill="${skin}"/>
+    <path d="M123 267q-13-10-22-4l-12 10 16 7h16z" fill="${skin}"/>
+    <path d="M91 270l15 4M95 266l16 4" stroke="#9c8369" fill="none"/>
+  </svg>`;
+}
+
+function cityMap() {
+  return `<svg viewBox="0 0 260 215" xmlns="http://www.w3.org/2000/svg" aria-label="彼得堡风格示意地图">
+    <rect width="260" height="215" fill="#333c34"/>
+    <g fill="#777966" stroke="#b7ae8c" stroke-width=".6" opacity=".7">
+      <path d="M11 15h49v30H11zM72 12h40v36H72zM132 14h51v31h-51zM196 13h50v37h-50z"/>
+      <path d="M12 62h38v42H12zM65 64h53v30H65zM167 61h30v33h-30zM211 64h34v42h-34zM17 155h41v43H17zM72 161h50v35H72zM152 153h34v43h-34zM201 153h42v43h-42z"/>
+    </g>
+    <path d="M-15 128Q58 103 105 127t88-4 83 1" fill="none" stroke="#152b2d" stroke-width="29"/>
+    <path d="M-15 128Q58 103 105 127t88-4 83 1" fill="none" stroke="#72908a" stroke-width="1" stroke-dasharray="8 5"/>
+    <path d="M126-10q-7 61 11 113" fill="none" stroke="#193032" stroke-width="13"/>
+    <g stroke="#d1c09a" stroke-width="5">
+      <path d="M60 99v42M191 101v41"/>
+    </g>
+    <g font-family="serif" font-size="12" text-anchor="middle">
+      ${[[35,32],[91,79],[157,31],[226,82],[93,179],[173,176]].map((xy, i) => `
+        <circle cx="${xy[0]}" cy="${xy[1]}" r="11" fill="${names[i] === state.loc ? "#ccb17c" : "#333b31"}" stroke="#c8ae7a"/>
+        <text x="${xy[0]}" y="${xy[1] + 4}" fill="${names[i] === state.loc ? "#263027" : "#daca9f"}">${i + 1}</text>
+      `).join("")}
+    </g>
+    <text x="134" y="211" fill="#b1b398" font-size="9" text-anchor="middle" letter-spacing="4">涅 瓦 河 畔 · 示 意</text>
+  </svg>`;
+}
+
+const option = (text, hint, effects, f, result) => ({ text, hint, effects, f, result });
+const scene = (title, text, options) => ({ title, text, options });
+
+const scenes = {
+  rodion: [
+    scene(
+      "阁楼里的斧影",
+      "楼梯间有湿木头和冷汤的气味。青年把一张写满论证的纸藏到袖中。“倘若一个人跨过界限，能换来许多人的幸福呢？”他问。你注意到，他从未说出那些人的名字。",
+      [
+        option("请他谈一个具体的人，而不是一种理论", "心力 −1 · 良知 +1 · 罗季昂趋向坦诚", { e: -1, c: 1 }, { rodion: 2 }, "你们谈到母亲、妹妹，以及隔壁挨饿的孩子。他第一次在自己的论证中停顿。"),
+        option("给他买热汤，在桌边陪他坐着", "卢布 −2 · 罗季昂与索尼娅的处境改善", { m: -2 }, { rodion: 1, sonya: 1 }, "他喝完汤，问起索尼娅。那句话里没有宏大的字眼。"),
+        option("告诉他：卓越者不必受普通人的规则束缚", "良知 −2 · 疑心 +1 · 罗季昂趋向孤绝", { c: -2, s: 1 }, { rodion: -2 }, "他的眼睛骤然亮起。你离开时，忽然希望自己没有说过那句话。")
+      ]
+    ),
+    scene(
+      "尚未署名的供述",
+      "他递给你一张纸。纸上有事实，有辩解，还有几处被指甲刮破的空白。“如果说出来，”他问，“我还剩下什么？”楼下传来靴子踏上台阶的声音。",
+      [
+        option("陪他整理事实，把决定权留给他", "心力 −2 · 良知 +2 · 疑心 +1 · 索尼娅也获得支持", { e: -2, c: 2, s: 1 }, { rodion: 3, sonya: 1 }, "你没有替他签名。你只是把灯移近，让他能看清自己写下的每个字。"),
+        option("请索尼娅一起来，但不让她独自承担", "卢布 −1 · 心力 −1 · 两人的命运均改善", { m: -1, e: -1 }, { rodion: 2, sonya: 2 }, "你带来茶与柴，留下三把椅子。谈话不再像审判，也不再像托付一个人的全部生命。"),
+        option("烧掉纸，劝他永远隐瞒", "疑心 −2 · 良知 −2 · 罗季昂趋向孤绝", { s: -2, c: -2 }, { rodion: -3 }, "纸边卷成黑色的花。他盯着炉火，像在等它替自己回答。")
+      ]
+    )
+  ],
+  sonya: [
+    scene(
+      "半块面包的分法",
+      "桌上只有半块面包，索尼娅却已经把它分成三份，没有一份留给自己。她问你需不需要坐下。炉膛是冷的，窗框塞着旧报纸。",
+      [
+        option("买柴和食物，并坚持让她也吃一份", "卢布 −3 · 良知 +1 · 索尼娅明显改善", { m: -3, c: 1 }, { sonya: 3 }, "她先是摇头，随后慢慢坐下。这顿饭里，她终于不是唯一站着的人。"),
+        option("分担跑腿，把剩下的时间留给她", "心力 −2 · 索尼娅与阿辽沙的互助线改善", { e: -2 }, { sonya: 2, alyosha: 1 }, "你替她跑了三个街口。回来时，她已经靠在椅背上睡着了。"),
+        option("赞美她的牺牲，然后告辞", "心力 +1 · 良知 −1 · 索尼娅的负担加深", { e: 1, c: -1 }, { sonya: -2 }, "她礼貌地道谢。走下楼梯时，你发现自己的赞美并不能燃烧。")
+      ]
+    ),
+    scene(
+      "一份写着她名字的工作",
+      "书商愿意把抄写工作交给她，却索要押金。与此同时，有人又来求她照顾一个病人。“我若拒绝，”她说，“会不会变成一个坏人？”",
+      [
+        option("替她付押金，请她自己决定是否接下", "卢布 −3 · 索尼娅获得独立生活的机会", { m: -3 }, { sonya: 3 }, "她在契约上写下姓名，字迹很慢，却没有借用任何人的称谓。"),
+        option("陪她与书商谈试工，替她分担一次照护", "心力 −2 · 索尼娅与罗季昂均改善", { e: -2 }, { sonya: 2, rodion: 1 }, "书商答应先试三页。她把照护的地址交给你，第一次没有为求助而道歉。"),
+        option("劝她放下工作：别人更需要她", "良知 −1 · 索尼娅失去退路", { c: -1 }, { sonya: -3 }, "她收起那张招聘启事，把自己的名字折进了纸里面。")
+      ]
+    )
+  ],
+  myshkin: [
+    scene(
+      "长椅上的陌生人",
+      "公爵正把手套送给一个醉汉，自己的指节却冻得发白。他相信娜斯塔霞可以开始新的生活，只要有人愿意不顾一切地救她。说到这里，他停下来，仿佛听见了“救”这个字的重量。",
+      [
+        option("问他：你知道她本人想要什么吗？", "心力 −1 · 公爵与娜斯塔霞均改善", { e: -1 }, { myshkin: 2, nastasya: 1 }, "他沉默了很久。“我应该先问她。”这一次，他没有替她把回答也说出来。"),
+        option("买两副手套，请他也收下一副", "卢布 −2 · 公爵获得照顾", { m: -2 }, { myshkin: 2 }, "他笑了一下，像一个突然被允许畏寒的普通人。"),
+        option("鼓励他承诺解决所有人的痛苦", "良知 −1 · 公爵与娜斯塔霞的压力增加", { c: -1 }, { myshkin: -2, nastasya: -1 }, "他认真地点头。你却看见，这个承诺比风雪更早压弯了他的肩。")
+      ]
+    ),
+    scene(
+      "没有收件人的承诺",
+      "他写了三封互相矛盾的信，每封信都愿意交出自己的一生。他问你哪一封更真诚。花园里，一个孩子正在试探薄冰。",
+      [
+        option("陪他退回不可能兑现的承诺", "心力 −2 · 良知 +1 · 公爵明显改善", { e: -2, c: 1 }, { myshkin: 3 }, "撕信并不轻松。他最终只留下一句话：我愿意听，但不会替你决定。"),
+        option("请他与娜斯塔霞各自写下边界", "心力 −1 · 两人都获得更清楚的退路", { e: -1 }, { myshkin: 2, nastasya: 2 }, "纸张分成两份，不再是一张由一人签字、另一人被安排的契约。"),
+        option("替他选出最像英雄的一封", "良知 −1 · 公爵趋向耗竭", { c: -1 }, { myshkin: -3 }, "那封信写得最美。也正因此，最难容许收信人说不。")
+      ]
+    )
+  ],
+  nastasya: [
+    scene(
+      "被注视的人",
+      "客厅里每个人都在谈她，却很少有人向她提问。一叠钞票摆在桌上，像某种粗鄙的结论。娜斯塔霞看着你：“你也是来告诉我，我值得多少的吗？”",
+      [
+        option("问她想去哪里，并认真等待回答", "心力 −1 · 娜斯塔霞获得自主空间", { e: -1 }, { nastasya: 2 }, "她没有立刻回答。你没有替她填补沉默。后来，她说了一个与任何男人都无关的地址。"),
+        option("当众制止羞辱，然后把谈话还给她", "心力 −1 · 疑心 +1 · 良知 +1 · 两条命运改善", { e: -1, s: 1, c: 1 }, { nastasya: 2, myshkin: 1 }, "客厅安静下来。你退到一旁，让下一句话由她自己说。"),
+        option("转述流言，让众人觉得你很知情", "卢布 +2 · 良知 −2 · 娜斯塔霞失去信任", { m: 2, c: -2 }, { nastasya: -3 }, "有人付钱买下你的“消息”。她不再看你，仿佛一扇窗从里面关上了。")
+      ]
+    ),
+    scene(
+      "另一把房门钥匙",
+      "她收拾了一个很小的箱子。没有人相信她只是想独自住一段时间。马车、押金与旁人的盘问横在门前。她把钥匙摊在掌心：“这次，我不想被谁带走。”",
+      [
+        option("支付车费与押金，不附加任何条件", "卢布 −4 · 娜斯塔霞明显改善", { m: -4 }, { nastasya: 3 }, "你把钱放在桌边，没有索要地址。她握住钥匙，第一次像握住一件只属于自己的东西。"),
+        option("陪她核对租约，找不参与争夺的邻人作伴", "心力 −2 · 娜斯塔霞与索尼娅的互助线改善", { e: -2 }, { nastasya: 2, sonya: 1 }, "你们逐条读完租约。隔壁的女裁缝愿意留一盏楼梯灯，而不打听她的过去。"),
+        option("把她的去向告诉一个声称爱她的人", "卢布 +3 · 良知 −3 · 两人的命运受损", { m: 3, c: -3 }, { nastasya: -4, myshkin: -1 }, "钱币碰在一起。你突然意识到，地址有时也会变成一道锁。")
+      ]
+    )
+  ],
+  ivan: [
+    scene(
+      "没有答案的账单",
+      "酒馆里，伊万把一枚硬币推来推去。他不愿接受一个以无辜者受苦为代价的世界。“那么，”他问，“一个人还能做什么？”窗外，一个送货孩子摔倒在泥水里。",
+      [
+        option("承认自己没有答案，邀请他先帮窗外的孩子", "心力 −1 · 良知 +1 · 伊万与阿辽沙均改善", { e: -1, c: 1 }, { ivan: 2, alyosha: 1 }, "他没有撤回自己的诘问，只是站起来，和你一起走进了雪里。"),
+        option("不争辩，听完他真正害怕的那件事", "心力 −2 · 伊万获得倾听", { e: -2 }, { ivan: 2 }, "直到酒凉了，他才说起父亲。那声音比刚才的论证低得多。"),
+        option("告诉他：既然没有答案，便什么都不必负责", "心力 +1 · 良知 −2 · 伊万趋向孤绝", { e: 1, c: -2 }, { ivan: -2 }, "他重复了一遍你的话，像试着把一把陌生的钥匙插进自己心里。")
+      ]
+    ),
+    scene(
+      "对面那张空椅子",
+      "伊万已有几夜没有睡好。他时而向你说话，时而盯着对面的空椅子，继而恼怒地否认自己看见了什么。他的手在发抖，酒却一口也没喝。",
+      [
+        option("陪他离开酒馆，找医生并请阿辽沙来", "卢布 −2 · 心力 −1 · 两兄弟的命运改善", { m: -2, e: -1 }, { ivan: 3, alyosha: 1 }, "你没有与那张空椅子辩论。你替他披好大衣，等他愿意起身。"),
+        option("陪他到天亮，把未说完的话写给弟弟", "心力 −3 · 伊万与阿辽沙均改善", { e: -3 }, { ivan: 2, alyosha: 2 }, "信上留下好几处涂改。最后一行很短：如果你愿意，请来。"),
+        option("拿他的失态取乐，赢得酒客的笑声", "卢布 +1 · 良知 −3 · 伊万受到重创", { m: 1, c: -3 }, { ivan: -4 }, "笑声很响，足以让你一时听不见他的沉默。")
+      ]
+    )
+  ],
+  alyosha: [
+    scene(
+      "石阶与破靴子",
+      "阿辽沙刚从一户人家回来，又准备去另一户。几个孩子等他兑现昨日的约定。他摸了摸口袋，里面有一张名单，却没有买面包的钱。",
+      [
+        option("买面包，与他一起把孩子们叫来", "卢布 −2 · 良知 +1 · 阿辽沙与索尼娅均改善", { m: -2, c: 1 }, { alyosha: 2, sonya: 1 }, "孩子们围成一圈。你们分的不是一个人的恩惠，而是一顿可以共同坐下的饭。"),
+        option("把名单分成两份，请他也留出休息时间", "心力 −2 · 阿辽沙明显改善", { e: -2 }, { alyosha: 3 }, "他起初不肯，后来把铅笔递给你。名单第一次不再像一张永远还不清的欠条。"),
+        option("告诉他有信念便不该觉得疲惫", "心力 +1 · 良知 −1 · 阿辽沙趋向自责", { e: 1, c: -1 }, { alyosha: -2 }, "他低头承认自己的“软弱”。你轻易赢得了一场本不该发生的辩论。")
+      ]
+    ),
+    scene(
+      "把自己的名字写进去",
+      "他想建立一个邻里互助的小组：有人送饭，有人陪病人，有人教孩子认字。但他仍把最难的工作全写在自己名字后面。另一张纸上，是哥哥迟迟未寄出的信。",
+      [
+        option("帮他排轮值表，也写上谁来照顾他", "心力 −2 · 阿辽沙与索尼娅均改善", { e: -2 }, { alyosha: 3, sonya: 1 }, "纸上终于出现了轮休。有人笑着说，圣人也得睡觉。这次他没有反驳。"),
+        option("替他完成今天的探访，让他去看伊万", "心力 −2 · 两兄弟的命运均改善", { e: -2 }, { alyosha: 2, ivan: 2 }, "他把名单交给你，快步穿过广场。那不是逃开责任，而是认出了另一种责任。"),
+        option("劝他只顾高尚的事业，不必理会家人", "良知 −1 · 两兄弟之间的距离加深", { c: -1 }, { alyosha: -2, ivan: -2 }, "他将信折好，放回口袋。石阶上那一小块没有融化的雪，被踩成了冰。")
+      ]
+    )
+  ]
+};
+
+try {
+  const saved = JSON.parse(localStorage.getItem(SAVE));
+  if (
+    saved &&
+    saved.version === 1 &&
+    names.includes(saved.loc) &&
+    ["day", "ap", "m", "c", "e", "s"].every(k => Number.isFinite(saved[k])) &&
+    ["progress", "fate", "visited"].every(k => saved[k] && names.every(id => Number.isFinite(saved[k][id]))) &&
+    Array.isArray(saved.logs)
+  ) {
+    state = saved;
+    loaded = true;
+  }
+} catch (err) {
+  loaded = false;
+}
+
+const escapeHTML = text => String(text).replace(/[&<>"']/g, c => ({
+  "&": "&amp;",
+  "<": "&lt;",
+  ">": "&gt;",
+  '"': "&quot;",
+  "'": "&#39;"
+}[c]));
+
+const clamp = (v, min, max) => Math.max(min, Math.min(max, v));
+
+function save() {
+  try {
+    localStorage.setItem(SAVE, JSON.stringify(state));
+  } catch (err) {
+    $("journal").title = "浏览器未允许存档；当前页面内仍可继续游玩。";
+  }
+}
+
+function toast(text) {
+  $("toast").textContent = text;
+  $("toast").hidden = false;
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => {
+    $("toast").hidden = true;
+  }, 3200);
+}
+
+function log(text) {
+  state.logs.unshift({ day: state.day, text });
+}
+
+function fateLabel(v) {
+  if (v >= 5) return "有了新的道路";
+  if (v >= 2) return "正在靠近灯火";
+  if (v >= 0) return "站在岔路口";
+  if (v >= -3) return "向孤独退去";
+  return "灯火将熄";
+}
+
+function currentScene() {
+  const id = state.loc;
+  const index = state.progress[id];
+
+  if (index < 2) return scenes[id][index];
+
+  return scene(
+    "故事之外的一小时",
+    `${people[id].short}已经与你谈过那些难以启齿的事。并没有奇迹发生，窗外依旧寒冷。你现在能做的，是让某个普通的小时不再那么难以度过。`,
+    [
+      option("留下，认真听一会儿", "心力 −2 · 此人的命运 +1", { e: -2 }, { [id]: 1 }, "你没有提出新的答案。离开时，房间里的沉默却不再与先前一样。"),
+      option("留下一份饭钱", "卢布 −2 · 此人的命运 +1", { m: -2 }, { [id]: 1 }, "两枚钱币解决不了命运，却可以让今晚不必空腹。"),
+      option("一起散步，不逼迫对方开口", "心力 +1 · 疑心 −1 · 命运不变", { e: 1, s: -1 }, {}, "你们走过一段结冰的街道。不是每一次相逢都必须改变什么。")
+    ]
+  );
+}
+
+function available(o) {
+  return !state.done &&
+    (!o.effects.m || state.m + o.effects.m >= 0) &&
+    (!o.effects.e || state.e + o.effects.e >= 0);
+}
+
+function shortage(o) {
+  if (o.effects.m && state.m + o.effects.m < 0) return "卢布不足";
+  if (o.effects.e && state.e + o.effects.e < 0) return "心力不足，可先抄写书稿";
+  return "";
+}
+
+function apply(o) {
+  for (const [key, value] of Object.entries(o.effects)) {
+    const max = key === "m" ? 99 : 10;
+    state[key] = clamp(state[key] + value, 0, max);
+  }
+
+  for (const [id, value] of Object.entries(o.f)) {
+    state.fate[id] = clamp(state.fate[id] + value, -8, 10);
+  }
+}
+
+function choose(index) {
+  if (state.done || $("modal").open) return;
+
+  const id = state.loc;
+  const o = currentScene().options[index];
+
+  if (!o || !available(o)) return;
+
+  apply(o);
+  state.progress[id] = Math.min(2, state.progress[id] + 1);
+  state.visited[id]++;
+  state.last = o.result;
+  log(`${people[id].short}：${o.result}`);
+  spendTime();
+}
+
+function dawn() {
+  state.e = clamp(state.e + 2, 0, 10);
+
+  const events = {
+    2: [
+      ["sonya", "房东开始催租。索尼娅把自己的晚饭藏到了孩子们看不见的地方。"],
+      ["rodion", "阁楼里一整夜亮着灯。罗季昂越来越少走下楼梯。"]
+    ],
+    3: [
+      ["myshkin", "公爵收到更多求助信，却还没有人问他是否睡过觉。"],
+      ["nastasya", "客厅的流言传到街上。娜斯塔霞收到了一封不愿拆开的信。"]
+    ],
+    4: [
+      ["ivan", "酒馆的人说，伊万又独自待到了打烊。"],
+      ["alyosha", "阿辽沙错过了与孩子们的约定；他承担的事已经太多。"]
+    ]
+  };
+
+  for (const [id, text] of events[state.day] || []) {
+    if (state.visited[id] === 0) {
+      state.fate[id] = clamp(state.fate[id] - 1, -8, 10);
+      log("城中消息：" + text + "〔尚未探访：命运 −1〕");
+    } else {
+      log(`城中消息：${people[id].short}遇见了新的难处，但此前的相逢让这一天稍有不同。`);
+    }
+  }
+
+  if (state.s >= 6) {
+    state.e = clamp(state.e - 2, 0, 10);
+    state.s = clamp(state.s - 2, 0, 10);
+    log("警方拦下你盘问。没有人被带走，但你耗费了心力。〔心力 −2，疑心 −2〕");
+  }
+
+  if (state.day === 5) {
+    const links = [["sonya", "rodion"], ["nastasya", "myshkin"], ["alyosha", "ivan"]];
+    for (const [from, to] of links) {
+      if (state.fate[from] >= 4) {
+        state.fate[to] = clamp(state.fate[to] + 1, -8, 10);
+        log(`${people[from].short}主动去见了${people[to].short}。你的选择之外，他们也在选择彼此。〔${people[to].short}命运 +1〕`);
+      }
+    }
+  }
+
+  if (state.day === 6) {
+    log("邮车明日清晨出发。这是留在彼得堡的最后一天。");
+  }
+}
+
+function spendTime() {
+  state.ap--;
+
+  if (state.ap <= 0) {
+    if (state.day === 6) {
+      state.done = true;
+      log("最后一夜过去了。我合上手记，远处传来邮车的铃声。");
+    } else {
+      state.day++;
+      state.ap = 3;
+      dawn();
+      state.last += "\n\n天亮了。休息恢复心力 2 点；城中消息已写入手记。";
+    }
+  }
+
+  save();
+  render();
+
+  if (state.done) showEnding();
+}
+
+function visit(id) {
+  state.loc = id;
+  state.last = "";
+  save();
+  render();
+}
+
+function rest() {
+  if (state.done) return;
+
+  state.e = clamp(state.e + 2, 0, 10);
+  state.m = Math.min(99, state.m + 1);
+  state.last = "你在油灯下抄写了一页书稿。句子属于别人，换来的一个卢布属于今晚。";
+  log("抄写书稿，稍作休整。〔心力 +2，卢布 +1〕");
+  spendTime();
+}
+
+function render() {
+  const p = people[state.loc];
+  const sc = currentScene();
+
+  $("clock").textContent = state.done ? "第六日 · 全书终" : `第 ${state.day} 日 · 余 ${state.ap} 次行动`;
+
+  const weather = ["薄雪", "浓雾", "冷雨", "霜冻", "北风", "雪停"];
+  $("weather").textContent = state.done ? "邮车的清晨" : `${weather[state.day - 1]} · ${["夜晚", "黄昏", "午后", "清晨"][state.ap]}`;
+
+  $("money").textContent = state.m;
+  $("conscience").textContent = state.c + " / 10";
+  $("spirit").textContent = state.e + " / 10";
+  $("suspicion").textContent = state.s + " / 10";
+  $("suspicion").style.color = state.s >= 6 ? "var(--red)" : "";
+
+  $("city").innerHTML = cityMap();
+
+  $("locations").innerHTML = names.map((id, i) => `
+    <button class="place ${state.loc === id ? "active" : ""}" data-place="${id}" aria-pressed="${state.loc === id}">
+      <span class="number">${i + 1}</span>
+      <b>${people[id].place}</b>
+      <small>${people[id].short} · ${state.progress[id]}/2 段关键故事</small>
+    </button>
+  `).join("");
+
+  $("placeTitle").textContent = p.place;
+  $("sceneTag").textContent = `${p.source} · ${state.progress[state.loc] < 2 ? "关键故事 " + (state.progress[state.loc] + 1) + " / 2" : "日常相伴"}`;
+  $("portrait").innerHTML = portrait(state.loc);
+  $("charName").textContent = p.name;
+  $("charSubtitle").textContent = p.role;
+
+  $("story").innerHTML = state.done
+    ? "<h3>人们继续生活，书页暂且合上</h3><p>你的十八次行动已经结束。你可以查看人物状态与手记，或重新阅读终章。</p>"
+    : `<h3>${escapeHTML(sc.title)}</h3><p>${escapeHTML(sc.text)}</p>`;
+
+  $("outcome").textContent = state.last;
+  $("outcome").style.whiteSpace = "pre-line";
+
+  $("choices").innerHTML = state.done ? "" : sc.options.map((o, i) => `
+    <button class="choice" data-choice="${i}" ${available(o) ? "" : "disabled"}>
+      <span class="key">${i + 1}</span>
+      <span>
+        <b>${escapeHTML(o.text)}</b>
+        <small>${escapeHTML(o.hint)}${available(o) ? "" : " · " + shortage(o)}</small>
+      </span>
+    </button>
+  `).join("");
+
+  $("cast").innerHTML = names.map(id => `
+    <button class="person" data-place="${id}">
+      <div class="avatar">${portrait(id)}</div>
+      <div>
+        <div class="person-name">${people[id].short}<em>${state.progress[id]}/2</em></div>
+        <div class="bar">
+          <i style="width:${((state.fate[id] + 8) / 18) * 100}%;background:${state.fate[id] < 0 ? "var(--red)" : "var(--gold)"}"></i>
+        </div>
+        <small>${fateLabel(state.fate[id])} · ${state.fate[id] > 0 ? "+" : ""}${state.fate[id]}</small>
+      </div>
+    </button>
+  `).join("");
+
+  $("journal").innerHTML = state.logs.map(l => `
+    <div class="entry">
+      <small>第 ${l.day} 日</small>
+      ${escapeHTML(l.text)}
+    </div>
+  `).join("");
+
+  $("restBtn").disabled = state.done;
+  $("endingBtn").hidden = !state.done;
+}
+
+function openModal(html) {
+  const d = $("modal");
+  if (d.open) d.close();
+  d.innerHTML = html;
+  d.showModal();
+}
+
+function help() {
+  openModal(`
+    <div class="eyebrow" style="color:#75613d">一名无名抄写员的六日</div>
+    <h2>你不是救世主，只是恰好经过。</h2>
+    <p>你将在六天后离开彼得堡。每天有三次行动；在地图上切换地点不耗时，作出选择或抄写书稿耗时一次。</p>
+    <p><b>卢布</b>支付食物、车费与押金。<b>心力</b>用于倾听、陪伴与奔走；每天清晨恢复 2 点。抄写书稿可获得 1 卢布、恢复 2 点心力。</p>
+    <p><b>良知</b>影响你自己的终章；<b>疑心</b>达到 6 时，次日清晨会遭盘问，额外损失 2 点心力，疑心降低 2 点。</p>
+    <p>每人有两段关键故事，之后仍可日常相伴。人物命运会彼此影响。第二至第四天，部分尚未探访的人物会因生活压力失去 1 点命运；第五天，足够稳定的关系可能带来主动互助。</p>
+    <p>终章会分别记录六个人的去向。命运达到 5 且完成两段关键故事，才能打开该人物的新道路；低于 0 则更趋孤独。并不存在还原原著的唯一正确选择。</p>
+    <p class="muted">人物来自不同作品，本游戏让他们在同一座架空的城市相遇。所有对话为原创改写。进度自动保存在当前浏览器；隐私模式或浏览器设置可能限制存档。</p>
+    <button data-modal="close">${loaded ? "回到这座城" : "翻开第一页"}</button>
+  `);
+}
+
+function showEnding() {
+  const good = names.filter(id => state.fate[id] >= 5 && state.progress[id] >= 2).length;
+  const dark = names.filter(id => state.fate[id] < 0).length;
+
+  let title;
+  let text;
+
+  if (state.c <= 2) {
+    title = "墨迹下的污点";
+    text = "你比来时更懂得利用人心，也更难为自己的句子署名。有人因你得到帮助，有人被你换成了钱；这些事不会互相抵销。";
+  } else if (good >= 4) {
+    title = "微光并不解释苦难";
+    text = "你没有证明世界公正，也没有替任何人写完一生。但几扇窗后，有人开始用自己的声音说话。这已经不是你来时的那座城。";
+  } else if (dark >= 4) {
+    title = "雪覆盖了未回的信";
+    text = "离开时，街道看上去比来时洁白。你知道那不意味着什么已被清理干净。有些敲门声，你将会在很久以后才听见。";
+  } else {
+    title = "未竟之书";
+    text = "你做过一些有用的事，也错过了一些不能重来的时刻。人并不因一个结局就被彻底解释。邮车向前，城市里的生活继续。";
+  }
+
+  openModal(`
+    <div class="eyebrow" style="color:#75613d">第七日 · 邮车驶离彼得堡</div>
+    <h2>${title}</h2>
+    <p>${text}</p>
+    <p class="muted">新道路 ${good}/6 · 良知 ${state.c}/10 · 剩余 ${state.m} 卢布</p>
+    ${names.map(id => {
+      const rank = state.fate[id] >= 5 && state.progress[id] >= 2 ? 2 : state.fate[id] >= 0 ? 1 : 0;
+      return `
+        <div class="ending-card">
+          <div class="end-face">${portrait(id)}</div>
+          <div>
+            <h3>${people[id].name} · ${["风雪未歇", "门尚未关", "另一条路"][rank]}</h3>
+            <p>${people[id].endings[rank]}</p>
+          </div>
+        </div>
+      `;
+    }).join("")}
+    <p class="muted">这是你参与的一种可能，不是对他们一生的判决。</p>
+    <button data-modal="close">返回手记</button>
+    <button data-modal="restart">重写这六天</button>
+  `);
+}
+
+function confirmRestart() {
+  openModal(`
+    <h2>重写这六天？</h2>
+    <p>当前浏览器中的进度将被替换。那些未说出口的话，你可以再试一次。</p>
+    <button data-modal="new">重新开始</button>
+    <button data-modal="close">保留当前手记</button>
+  `);
+}
+
+document.addEventListener("click", ev => {
+  const place = ev.target.closest("[data-place]");
+  if (place) visit(place.dataset.place);
+
+  const choice = ev.target.closest("[data-choice]");
+  if (choice) choose(Number(choice.dataset.choice));
+
+  const action = ev.target.closest("[data-modal]");
+  if (!action) return;
+
+  switch (action.dataset.modal) {
+    case "close":
+      $("modal").close();
+      break;
+    case "restart":
+      confirmRestart();
+      break;
+    case "new":
+      state = fresh();
+      loaded = false;
+      save();
+      render();
+      $("modal").close();
+      toast("雪还没有盖住第一个脚印。");
+      break;
+  }
+});
+
+document.addEventListener("keydown", ev => {
+  if ($("modal").open || ev.ctrlKey || ev.altKey || ev.metaKey || ev.repeat) return;
+
+  if (["1", "2", "3"].includes(ev.key)) {
+    ev.preventDefault();
+    choose(Number(ev.key) - 1);
+  }
+});
+
+$("helpBtn").onclick = help;
+$("restartBtn").onclick = confirmRestart;
+$("endingBtn").onclick = showEnding;
+$("restBtn").onclick = rest;
+
+render();
+
+if (!loaded) {
+  help();
+} else {
+  toast(state.done ? "已找回你的终章。" : "已找回上次留下的手记。");
+}
+</script>
+
+
+</body></html>
